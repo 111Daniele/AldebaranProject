@@ -1,3 +1,3 @@
 export const environment = {
-    HOST: "http://localhost:8000/"
+    HOST: "https://aldebaranproject.onrender.com/"
 };

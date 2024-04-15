@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, tap, throttleTime, throwError } from 'rxjs';
 import { User } from '../Models/User';
 import { Router } from '@angular/router';
+import {environment} from 'src/environments/environment'
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   signup(user){
-    return this.http.post("http://localhost:8000/users/signup", user).pipe(catchError(this.errorHandler), tap((res)=> {
+    return this.http.post(environment.HOST + "users/signup", user).pipe(catchError(this.errorHandler), tap((res)=> {
       this.createUser(res)
       }
       ))
@@ -28,7 +29,7 @@ export class AuthService {
 
 
   login(user){
-    return this.http.post("http://localhost:8000/users/login", user).pipe(catchError(this.errorHandler), tap((res)=> {
+    return this.http.post(environment.HOST + "users/login", user).pipe(catchError(this.errorHandler), tap((res)=> {
       console.log("inizio login auth")
       this.createUser(res)
       }

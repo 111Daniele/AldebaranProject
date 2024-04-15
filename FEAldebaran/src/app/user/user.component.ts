@@ -7,6 +7,7 @@ import { StatesService } from '../services/states.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-user',
@@ -72,7 +73,7 @@ export class UserComponent implements OnInit{
   sendMeteor(){
     this.auth.user.subscribe(u => this.user= u)
     console.log("user", this.user, "met£", this.rformMeteor.value)
-    this.http.post("http://localhost:8000/users/addMeteor", {idName: this.user.id, meteor: this.rformMeteor.value}).subscribe()
+    this.http.post(environment.HOST + "users/addMeteor", {idName: this.user.id, meteor: this.rformMeteor.value}).subscribe()
   }
 
 

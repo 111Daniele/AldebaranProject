@@ -8,7 +8,7 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { BehaviorSubject, TimeoutError, timeout } from 'rxjs';
 import { User } from '../Models/User';
-
+import { environment } from 'src/environments/environment';
 
 
 
@@ -207,7 +207,7 @@ export class HomeComponent implements OnInit{
   sendMeteor(){
     this.auth.user.subscribe(u => this.user= u)
     console.log("user", this.user, "met£", this.rformMeteor.value)
-    this.http.post("http://localhost:8000/users/addMeteor", {idName: this.user.id, meteor: this.rformMeteor.value}).subscribe()
+    this.http.post(environment.HOST + "users/addMeteor", {idName: this.user.id, meteor: this.rformMeteor.value}).subscribe()
   }
 
 switchLoading(){

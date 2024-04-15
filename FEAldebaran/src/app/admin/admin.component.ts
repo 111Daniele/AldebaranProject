@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { StatesService } from '../services/states.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-admin',
@@ -26,7 +27,7 @@ states: StatesService = inject(StatesService)
   ngOnInit(): void {
     this.states.amInAdmin=true
     this.states.adminSection=false
-    this.http.get("http://localhost:8000/users/usersNotApproved").subscribe(x => {console.log("risposta",x);this.users= x["data"]; this.loaderUsers=false})
+    this.http.get(environment.HOST + "users/usersNotApproved").subscribe(x => {console.log("risposta",x);this.users= x["data"]; this.loaderUsers=false})
     this.auth.user.subscribe(x => {if (!x) {
       console.log("non sei piu loggato")
       
@@ -50,7 +51,7 @@ let istanza= this.users.find(x=> x.name==id)
 
   console.log("utenti dopo elimin ", this.users)
 
-  this.http.post("http://localhost:8000/users/approveUser", {id:id}).subscribe()
+  this.http.post(environment.HOST + "users/approveUser", {id:id}).subscribe()
 
 }
 
