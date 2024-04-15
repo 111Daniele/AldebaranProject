@@ -25,7 +25,7 @@ app.use(exp.urlencoded({extended: true}))
 
 app.use(exp.json());
 
-app.listen(process.env.PORT);
+app.listen(10000);
 
 
 
