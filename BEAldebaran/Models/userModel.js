@@ -4,7 +4,7 @@ const {Meteor, meteorSchema} = require("./meteorModel.js")
 const bcryptjs = require("bcryptjs")
 const crypto = require("crypto")
 
-mongoose.connect("mongodb+srv://admin:KpFX8wRoJZ2VZifc@cluster0.aaihora.mongodb.net/Aldebaran?retryWrites=true&w=majority&appName=Cluster0", {useNewUrlParser: true}).then((conn)=> console.log("ok conn"))
+mongoose.connect("mongodb+srv://admin:KpFX8wRoJZ2VZifc@cluster0.aaihora.mongodb.net/Aldebaran?retryWrites=true&w=majority&appName=Cluster0").then((conn)=> console.log("ok conn"))
 
 console.log("ua")
 
