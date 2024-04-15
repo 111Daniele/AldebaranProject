@@ -14,7 +14,7 @@ const fetchData = require("./fetchData.js")
 
 require('dotenv').config({path: './config.env'})
 
-console.log(process.env.PORT)
+console.log("porta n.", process.env.PORT)
 
 const app= exp();
 
