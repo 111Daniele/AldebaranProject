@@ -126,6 +126,8 @@ app.get("/", (req, res)=>{let headers = req.headers; console.log(headers) ; if (
 // })
 
 
+console.log("meta app.js")
+
 app.get("/CNEOS_API", async (req, res) => {
   console.log("STARTED CNEOS API")
   let meteors= await Meteor.find();
@@ -190,9 +192,11 @@ else if(met.v_inf=="NaN"){
 });}
 )
 
-  app.all("*", (req, res, next) => {next(new CustomError("aa", 400))})
+  app.all("*", (req, res, next) => {console.log("altri endpoint"); next(new CustomError("aa", 400))})
 
 app.use(errorController)
 
 
 module.exports= app
+
+console.log("fine app.js")
