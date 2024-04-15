@@ -14,7 +14,7 @@ const fetchData = require("./fetchData.js")
 
 require('dotenv').config({path: './config.env'})
 
-console.log("porta n.", process.env.PORT)
+
 
 const app= exp();
 
@@ -25,9 +25,11 @@ app.use(exp.urlencoded({extended: true}))
 
 app.use(exp.json());
 
-app.listen(10000);
+const port= process.env.PORT || 4000
 
+app.listen(port);
 
+console.log("porta n.", port)
 
 // READING CSV FILES FROM ANOTHER SOURCES
 
