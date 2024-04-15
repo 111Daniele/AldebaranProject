@@ -19,7 +19,7 @@ console.log(process.env.PORT)
 const app= exp();
 
 
-app.use(cors());
+app.use(cors({origin: "https://aldebaranprojectfe.onrender.com/"}));
 
 app.use(exp.urlencoded({extended: true}))
 
