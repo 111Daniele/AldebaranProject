@@ -127,6 +127,7 @@ app.get("/", (req, res)=>{let headers = req.headers; console.log(headers) ; if (
 
 
 app.get("/CNEOS_API", async (req, res) => {
+  console.log("STARTED CNEOS API")
   let meteors= await Meteor.find();
   axios.get('https://ssd-api.jpl.nasa.gov/sentry.api')
 .then(function(response) {
