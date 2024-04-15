@@ -6,7 +6,7 @@ const crypto = require("crypto")
 
 mongoose.connect("mongodb+srv://admin:KpFX8wRoJZ2VZifc@cluster0.aaihora.mongodb.net/Aldebaran?retryWrites=true&w=majority&appName=Cluster0").then((conn)=> console.log("ok conn"))
 
-console.log("ua")
+console.log("uaa")
 
 const userSchema= mongoose.Schema({
     name: {type: String, unique: [true, "Already exists user with same name"]},
