@@ -1,0 +1,92 @@
+.header{
+    background-color:black;
+    border-bottom: 10px solid black;
+    height: 50px;
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    padding: 10px 20px;
+    color: white
+}
+
+
+.div_buttons{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%
+}
+
+.div_button {
+margin: 0 10px;
+
+}
+
+
+
+.title{
+    display:flex;
+    align-items: flex-start;
+    width:100%;
+height:100%}
+
+
+
+
+.aldebaran{
+    text-align:left;
+     font-weight: bold; 
+     font-size:50px;
+      font-family: fantasy;
+       /* max-width: 90%; */
+        overflow: hidden;
+        /* border: 2px solid yellow; */
+        flex-wrap: nowrap;
+        white-space: nowrap;
+        height:100%;
+        padding-top: 16px
+}
+
+button {
+    display: inline-block;
+    /* padding: 15px 25px; */
+    /* font-size: 24px; */
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    /* outline: none; */
+    color: #fff !important;
+    background-color: #24c9e6 !important;
+    border: 2px solid white !important;
+    border-radius: 15px;
+    box-shadow: 0 5px #999 !important;
+    width:260px
+  }
+  
+  button:hover {background-color:#3e8e41} 
+  
+button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666 !important;
+    transform: translateY(4px);
+  } 
+
+/* @media screen and (min-width: 712px) {
+    .aldebaran{
+        width:
+    }
+  } */
+
+
+/* @media screen and (min-width: 744px) {
+    .aldebaran{
+        font-size: 30px
+    }
+  }
+  
+  @media screen and (min-width: 1100px) {
+    .aldebaran{
+        font-size: 50px
+    }
+  }
+   */

@@ -1,0 +1,12 @@
+.add_meteor{
+    padding: 100px 100px;
+    position: absolute;
+    top:20px;
+    left:40px;
+    z-index:1;
+    border: 2px solid red;
+    border-radius: 20px;
+    width: 300px;
+    background-color: white;
+}
+

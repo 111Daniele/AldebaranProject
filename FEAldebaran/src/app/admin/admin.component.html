@@ -1,0 +1,97 @@
+<div class="user-profile">  
+
+    <!-- <div class="name">  NOME: {{user?.name}}</div> -->
+
+    <div class="name">  ADMIN</div>
+
+    <div class="data"> 
+    <div class="registered"> Registered in Date: 01/01/2021 </div>
+
+<!-- {{user?.id }} {{user?.meteor }} -->
+<br>
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="users"> <div class="title-users" *ngIf="users"> Users waiting for approval: </div>
+
+    <div class="no-users" *ngIf="users.length==0 && loaderUsers==false"> No users waiting for approval </div>
+
+    <div *ngIf="loaderUsers" class="loader"> </div>
+    
+    
+    <div *ngFor="let user of users" class="user"> 
+        
+        <div style="display:flex; flex-direction: row;"> <div style="font-weight: bold;"> ID: </div> <div style="padding-left: 10px"> {{user.name}}</div> </div>
+      
+        
+        <div style="display:flex; flex-direction: row;"> <div style="font-weight: bold;">Registration Date: </div> <div style="padding-left: 10px">{{user.registration|date: "dd MMMM yyyy"}} </div> </div>
+        
+        <button class="approve" (click)="approve(user.name)"> APPROVE</button>
+    
+    
+    </div> 
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+</div> <!-- USERPROFILE -->
+
+<!-- <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon"></mat-icon> -->

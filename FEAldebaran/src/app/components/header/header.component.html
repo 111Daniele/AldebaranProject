@@ -1,0 +1,37 @@
+<header class="header">
+  <div class="title" style="overflow:hidden; margin-top:6px">  
+   <img src="./../../../assets/logo.png" width="50vw" height="50vh" style="margin-right: 10px; cursor: pointer" routerLink="/"/>  <p class="aldebaran"> ALDEBARAN PROJECT</p> 
+   </div>  
+
+
+   <!-- <div *ngIf="user" style="border: 2px solid yellow">  {{user?.id}} </div> GENERIC-->
+   <div *ngIf="user" style=" width: 1500px; font-size: 35px"> LOGGED AS: {{user.id}} </div> 
+
+
+
+<div class="div_buttons" >
+
+
+
+<div class="div_button" *ngIf="!user">  <button class="button" style="color:red; background-color: rgb(226, 216, 156); font-weight: bold; font-size:30px; border: 2px solid red" (click)="signup()" mat-raised-button>SIGNUP</button>  </div>
+<div class="div_button"  *ngIf="!user">  <button class="button" style="color:red;  background-color: rgb(226, 216, 156); font-weight: bold; font-size:30px; border: 2px solid red" (click)="login()" mat-raised-button>LOGIN</button> </div>
+
+<div class="div_button"  *ngIf="user?.role=='admin' && states.adminSection">  <button class="button" style="color:red;  background-color: rgb(226, 216, 156); font-weight: bold; font-size:30px; border: 2px solid red" (click)="approve()" mat-raised-button>APPROVE</button> </div>
+
+<div class="div_button"  *ngIf="user"> <div *ngIf="!this.states.myMeteorSection"> <button class="button" style="color:red;  background-color: rgb(226, 216, 156); font-weight: bold; font-size:30px; border: 2px solid red"  mat-raised-button [routerLink]="['users', user.id]">MY METEORS</button> </div> </div>
+
+<div *ngIf="this.states.myMeteorSection"> <button routerLink="/" class="button" style="color:red;  background-color: rgb(226, 216, 156); font-weight: bold; font-size:30px; border: 2px solid red"> HOME </button> </div>
+<div *ngIf="this.states.amInAdmin"> <button routerLink="/" class="button" style="color:red;  background-color: rgb(226, 216, 156); font-weight: bold; font-size:30px; border: 2px solid red"> HOME </button> </div>
+
+
+<div class="div_button"  *ngIf="user">  <button class="button" style="color:red;  background-color: rgb(226, 216, 156); font-weight: bold; font-size:30px; border: 2px solid red" (click)="addMeteor()" mat-raised-button>ADD METEOR</button> </div>
+
+<div class="div_button"  *ngIf="user">  <button class="button" style="color:red;  background-color: rgb(226, 216, 156); font-weight: bold; font-size:30px; border: 2px solid red" (click)="logout()" mat-raised-button>LOGOUT</button> </div>
+
+
+</div>
+
+
+</header>
+
+<!-- `users/${user.id}` -->

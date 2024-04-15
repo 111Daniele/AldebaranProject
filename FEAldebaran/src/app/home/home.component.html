@@ -1,0 +1,273 @@
+<div class="home"> 
+
+  
+<div *ngIf="isLoading && !errorFetch" class="loader"> </div>
+
+<div *ngIf="errorFetch" class="errorFetch"> <p> SERVER ERROR: An Error has occured when fetch meteors. Try Again <button class="refresh" (click)="refresh()">REFRESH</button> </p></div>
+
+<div *ngIf="errorLogin" class="overlay"> <p style="color:red; padding-left:30%; padding-top: 20%"> ERROR LOGIN <button style="margin-right: 20%; "   class="refresh" (click)="close()">CLOSE</button> </p></div>
+
+
+<div *ngIf="!isLoading && !errorFetch">  
+
+<div class="buttons_container"> 
+<button class="filter_button" (click)="sortMeteors('v_inf')"> Velocity {{fields["v_inf"]== "none" ? "" : fields["v_inf"]== "asc" ? "↓" : "↑"}} </button>
+
+<button class="filter_button" (click)="sortMeteors('diameter')"> Diameter {{fields["diameter"]== "none" ? "" : fields["diameter"]== "asc" ? "↓" : "↑"}} </button>
+
+<button class="filter_button" (click)="sortMeteors('ps_max')"> Hazard {{fields["ps_max"]== "none" ? "" : fields["ps_max"]== "asc" ? "↓" : "↑"}} </button>
+
+<button class="filter_button" (click)="sortMeteors('h')"> Magnitude {{fields["h"]== "none" ? "" : fields["h"]== "asc" ? "↓" : "↑"}} </button>
+
+<button class="filter_button" (click)="sortMeteors('last_obs')"> Last Obs{{fields["last_obs"]== "none" ? "" : fields["last_obs"]== "asc" ? "↓" : "↑"}} </button>
+
+<button class="filter_button" (click)="sortMeteors('range')"> Range {{fields["range"]== "none" ? "" : fields["range"]== "asc" ? "↓" : "↑"}} </button>
+
+<!-- <button class="filter_button" (click)="switchLoading()">  LOAD</button> -->
+
+<div class="paginate">  
+
+<div *ngIf="page!=1000" (click)="firstPage()"> <button class="paginate_button"> FIRST  </button></div>
+
+
+<div *ngIf="page>1000" style="display: inline">   <button class="paginate_button" (click)="prevPage()">  PREV </button>  </div>
+
+
+
+<div class="page"> {{page/1000}}/{{lastNumberPage}}</div>
+
+
+<div  *ngIf="page!=lastNumberPage*1000"> <button class="paginate_button" (click)="nextPage()" >   NEXT </button> </div>
+
+<div *ngIf="page!=lastNumberPage*1000" (click)="lastPage()"> <button class="paginate_button"> LAST  </button></div>
+
+</div>
+<!-- PAGINATE DIV -->
+</div>
+<!-- MASTER CONTAINER DIV -->
+
+
+</div> <!-- FINE NG IF-->
+
+
+
+
+
+<div *ngIf="states.alertWindow">  
+<div class="overlay"> </div>
+<div class="alert"> <h2> YOU ARE NOT APPROVED! WAIT FOR APPROVAL! </h2><button (click)="closeWindow()"> OK</button> </div>
+
+
+</div>
+
+
+
+
+<!-- OLD ADD METEOR -->
+ <!-- <div *ngIf="this.states.formAddMeteor" > FORM ADD METREOR </div> -->
+
+<div *ngIf="!isLoading && !errorFetch" class="container_meteors" > 
+
+
+
+<div *ngFor="let meteor of selected_meteors" > <app-meteor [meteor]="meteor"> </app-meteor></div>
+
+</div>
+
+
+<br><br> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- second old form for add meteor
+<div *ngIf="states.formAddMeteor"> 
+    <app-create-meteor></app-create-meteor>
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- form for add meteor-->
+<div class="form-meteor" *ngIf="states.formAddMeteor" > 
+
+  <form [formGroup]="rformMeteor">  
+
+    <button class="close" (click)="closeMeteorForm()"> X</button>
+  <div class="title-form-meteor">  <p> ADD METEOR</p> </div> 
+    <div class="fields-meteor"> <!-- BEGIN ALL FIELDS DIV -->
+  
+
+      <div class="example-container">
+      <div class="title-field"> ID Meteor: </div>
+          <mat-form-field >
+            <mat-label>ID Meteor</mat-label>
+            <input matInput placeholder="ID Meteor" formControlName="id"/>
+            
+          </mat-form-field>
+        </div>
+        
+
+        
+
+      <div class="example-container" > <!-- THER WAS DISPLAY:GRIDF-->
+        <div class="title-field"> Diameter: </div>
+<mat-form-field>
+  <mat-label>Diameter </mat-label>
+  <input matInput placeholder="" formControlName="diameter"/>
+</mat-form-field>
+</div>
+
+<div class="example-container" >
+<div class="title-field"> Magnitude: </div>
+<mat-form-field>
+  <mat-label>Magnitude </mat-label>
+  <input matInput placeholder="" formControlName="h"/>
+</mat-form-field>
+</div>
+
+
+<div class="example-container" >
+<div class="title-field"> Last Observation: </div>
+<mat-form-field>
+  <mat-label>Last Observation </mat-label>
+  <input matInput placeholder="" formControlName="last_obs"/>
+</mat-form-field>
+</div>
+
+<div class="example-container" >
+<div class="title-field"> Range:</div>
+<mat-form-field>
+  <mat-label>Range </mat-label>
+  <input matInput placeholder="" formControlName="range"/>
+</mat-form-field>
+</div>
+
+
+<div class="example-container" >
+<div class="title-field"> Hazard: </div>
+<mat-form-field>
+  <mat-label>Hazard </mat-label>
+  <input matInput placeholder="" formControlName="ps_max"/>
+</mat-form-field>
+</div>
+
+<div class="example-container" >
+  <div class="title-field"> Velocity: </div>
+<mat-form-field>
+  <mat-label>Velocity</mat-label>
+  <input matInput placeholder="" formControlName="v_inf"/>
+  
+</mat-form-field>
+</div>
+
+
+
+</div> <!-- CLOSE ALL FIELDS DIV -->
+
+
+  <button class="addMeteor" (click)="sendMeteor()"> ADD</button>
+  </form>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- END FORM FOR ADD EMTEOR-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- FORM SIGNUP AND LOGIN -->
+<div class="form" *ngIf="states.signup" > 
+
+    <form [formGroup]="rform">  
+
+      <button class="close" (click)="close()"> X</button>
+    <div class="title-form">  <p> {{states.login ? "LOGIN" : "SIGNUP" }}</p> </div> 
+      <div class="fields"> <!-- BEGIN ALL FIELDS DIV -->
+    
+
+        <div class="example-container">
+         
+            <mat-form-field>
+              <mat-label>Enter your name</mat-label>
+              <input matInput placeholder="name" formControlName="name"/>
+              
+            </mat-form-field>
+          </div>
+          
+
+          
+
+        <div class="example-container">
+  <mat-form-field>
+    <mat-label>Enter your email</mat-label>
+    <input matInput placeholder="pat@example.com" formControlName="email"/>
+    
+  </mat-form-field>
+</div>
+
+
+
+
+      <mat-form-field>
+    <mat-label>Enter your password</mat-label>
+    <input matInput [type]="hide ? 'password' : 'text'" placeholder="$pwd1234" formControlName="password">
+    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+  </mat-form-field>
+
+</div> <!-- CLOSE ALL FIELDS DIV -->
+
+
+    <button class="send" (click)="sendForm()"> SEND</button>
+    </form>
+
+</div>
+
+
+<!-- <button (click)="show()" style="font-size:300px">  show </button> -->
+
+</div>

@@ -1,0 +1,193 @@
+<div class="user-profile">  
+
+    <!-- <div class="name">  NOME: {{user?.name}}</div> -->
+
+    <div class="name">  NAME: {{idUser}}</div>
+
+    <div class="data"> 
+    <div class="registered"> Registered in Date:{{user?.registration | date: "dd MMMM yyyy"}} <div style="display: inline" *ngIf="!user?.registration"> 2024 </div> </div>
+
+<!-- {{user?.id }} {{user?.meteor }} -->
+<br>
+
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- form for add meteor-->
+<div class="form-meteor" *ngIf="states.formAddMeteor" > 
+
+  <form [formGroup]="rformMeteor">  
+
+    <button class="close" (click)="closeMeteorForm()"> X</button>
+  <div class="title-form-meteor">  <p> ADD METEOR</p> </div> 
+    <div class="fields-meteor"> <!-- BEGIN ALL FIELDS DIV -->
+  
+
+      <div class="example-container">
+      <div class="title-field"> ID Meteor: </div>
+          <mat-form-field >
+            <mat-label>ID Meteor</mat-label>
+            <input matInput placeholder="ID Meteor" formControlName="id"/>
+            
+          </mat-form-field>
+        </div>
+        
+
+        
+
+      <div class="example-container" > <!-- THER WAS DISPLAY:GRIDF-->
+        <div class="title-field"> Diameter: </div>
+<mat-form-field>
+  <mat-label>Diameter </mat-label>
+  <input matInput placeholder="" formControlName="diameter"/>
+</mat-form-field>
+</div>
+
+<div class="example-container" >
+<div class="title-field"> Magnitude: </div>
+<mat-form-field>
+  <mat-label>Magnitude </mat-label>
+  <input matInput placeholder="" formControlName="h"/>
+</mat-form-field>
+</div>
+
+
+<div class="example-container" >
+<div class="title-field"> Last Observation: </div>
+<mat-form-field>
+  <mat-label>Last Observation </mat-label>
+  <input matInput placeholder="" formControlName="last_obs"/>
+</mat-form-field>
+</div>
+
+<div class="example-container" >
+<div class="title-field"> Range:</div>
+<mat-form-field>
+  <mat-label>Range </mat-label>
+  <input matInput placeholder="" formControlName="range"/>
+</mat-form-field>
+</div>
+
+
+<div class="example-container" >
+<div class="title-field"> Hazard: </div>
+<mat-form-field>
+  <mat-label>Hazard </mat-label>
+  <input matInput placeholder="" formControlName="ps_max"/>
+</mat-form-field>
+</div>
+
+<div class="example-container" >
+  <div class="title-field"> Velocity: </div>
+<mat-form-field>
+  <mat-label>Velocity</mat-label>
+  <input matInput placeholder="" formControlName="v_inf"/>
+  
+</mat-form-field>
+</div>
+
+
+
+</div> <!-- CLOSE ALL FIELDS DIV -->
+
+
+  <button class="addMeteor" (click)="sendMeteor()"> ADD</button>
+  </form>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- END FORM FOR ADD EMTEOR-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="meteors"> <div class="title-meteors"> Meteors Discovered: </div>
+
+    <div *ngIf="meteors?.length==0"> Meteors not yet recorded </div>
+    
+    <div *ngIf="loaderMeteors" class="loader"> </div>
+
+    <div *ngFor="let meteor of meteors" class="meteor"> 
+        
+        <div class="border-right"> ID: {{meteor.des}} </div>
+        <div class="border-right"> Diameter: {{meteor.diameter}}  </div>
+        <div class="border-right"> Magnitude: {{meteor.h}}  </div>
+        <div class="border-right"> Last Observation: {{meteor.last_obs}} </div>
+        <div class="border-right"> Range: {{meteor.range}}  </div>
+        <div class="border-right"> Hazard: {{meteor.ps_max | number: '1.2-2'}} </div>
+        <div> Velocity: {{meteor.v_inf | number: '1.2-2'}}  </div>
+        
+        
+    
+    </div> 
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+</div> <!-- USERPROFILE -->
+
+<!-- <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon"></mat-icon> -->

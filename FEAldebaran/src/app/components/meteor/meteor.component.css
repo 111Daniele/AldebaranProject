@@ -1,0 +1,90 @@
+.example-card {
+    max-width: 400px;
+    /* border: 5px solid red; */
+    margin: 10px 10px;
+    border-radius: 20px;
+    box-shadow: 10px 10px 10px black;
+    cursor: pointer;
+    margin-bottom: 20px;
+    background-color: black; 
+   color: white ;
+   width: 20vw;
+  
+  
+  }
+
+  .yellow{
+    border: 5px solid yellow;
+  }
+
+  .green{
+    border: 5px solid green;
+  }
+
+  .red{
+    border: 5px solid red;
+  }
+
+  .yelloww{
+    color: yellow
+  }
+
+  .greenn{
+    color: green
+  }
+
+  .redd{
+    color:red
+  }
+
+
+  .card-header{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .example-card:hover{
+    transform: scale(1.1);
+    transition-duration: 1000ms;
+    transition-property: all;
+    transition-timing-function: ease;}
+    /* position:absolute;
+    z-index: 1; */
+  
+    .removeindex{
+      z-index:0
+    }
+
+  .id{
+    /* color: red */
+  }
+
+
+  .des{
+    text-align: center;
+   
+    font-size: 50px;
+    margin-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid red;
+    
+  }
+
+  @media screen and (max-width: 1654px) and (min-width: 954px) {
+    .example-card{
+      width:31vw
+    }
+  }
+  
+
+  @media screen and (max-width: 953px) and (min-width: 613px) {
+    .example-card{
+      width:42vw
+    }
+  }
+
+  @media screen and (max-width: 612px) {
+    .example-card{
+      width:90vw
+    }
+  }
