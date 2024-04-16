@@ -84,7 +84,7 @@ export class HomeComponent implements OnInit{
       let subscription= this.meteorServices.getMeteors().subscribe(
         {next: x=> {
         this.meteors= x; 
-        console.log("inizializz", this.meteors); 
+        console.log("iniziation", this.meteors.length); 
         this.selected_meteors= this.meteors.slice(0,this.page);this.isLoading=false;
         let totalMeteors= this.meteors.length
         this.lastNumberPage= parseInt(String(totalMeteors).slice(0, String(totalMeteors).length- 3))
