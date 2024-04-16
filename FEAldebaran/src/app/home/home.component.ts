@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { AfterContentInit, AfterRenderRef, AfterViewChecked, AfterViewInit, Component, OnInit, inject } from '@angular/core';
 import { StatesService } from '../services/states.service';
 import { Meteor } from '../Models/Meteor';
 import { MeteorsService } from '../services/meteors.service';
@@ -20,7 +20,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit, AfterViewInit{
 
   constructor(public states: StatesService, public meteorServices: MeteorsService, public http: HttpClient, private auth: AuthService, private router: Router){
 
@@ -58,6 +58,8 @@ export class HomeComponent implements OnInit{
   errorFetch: boolean= false
 
   errorLogin: boolean= false
+
+  meteors2
   
   ngOnInit(): void {
     this.errorFetch= false
@@ -80,25 +82,38 @@ export class HomeComponent implements OnInit{
     )
     
 
-    
-      let subscription= this.meteorServices.getMeteors().subscribe(
+    let cacheMeteors= localStorage.getItem("cacheMeteors")
+    console.log("cache meteor 1", cacheMeteors)
+    if (!cacheMeteors){
+      console.log("dentro if")
+      let subscription1= this.meteorServices.getMeteors().subscribe(
         {next: x=> {
         this.meteors= x; 
-        console.log("iniziation", this.meteors.length); 
-        this.selected_meteors= this.meteors.slice(0,this.page);this.isLoading=false;
+        console.log("iniziation 1", this.meteors.length); 
+        this.selected_meteors= this.meteors.slice(0,this.page)
+        this.isLoading=false;
         let totalMeteors= this.meteors.length
         this.lastNumberPage= parseInt(String(totalMeteors).slice(0, String(totalMeteors).length- 3))
-        
+        console.log("ending 1", this.meteors)
+        localStorage.setItem("cacheMeteors", JSON.stringify(this.meteors))
       },
-      error: (e) => {this.errorFetch= true; console.log("SCATTATO ERROE")}});
+      error: (e) => {this.errorFetch= true; console.log("SCATTATO ERROE")}});}
+    else{
+      console.log("cache meteors 1 act")
+      this.meteors= JSON.parse(localStorage.getItem("cacheMeteors"))
+      console.log("contenuto ",  JSON.parse(localStorage.getItem("cacheMeteors")))
+      this.isLoading=false
+      this.selected_meteors= this.meteors.slice(0,this.page)
+
+    }
     
 
-
+      
   
     
     
-    console.log("meteore ", this.meteors= this.meteorServices.meteors)
-    this.meteors= this.meteorServices.meteors;
+    // console.log("meteore ", this.meteors= this.meteorServices.meteors)
+    // this.meteors= this.meteorServices.meteors;
     
     
 
@@ -109,6 +124,40 @@ export class HomeComponent implements OnInit{
     })
     
   }
+
+
+  ngAfterViewInit() {
+    
+  
+    setTimeout(()=>{
+    console.log("ngAFTERCONTENITNIT")
+
+    let cacheMeteorsD= localStorage.getItem("cacheMeteors")
+
+    if (true){
+    let subscription2= this.meteorServices.getMeteors2().subscribe(
+      {next: x=> {
+      this.meteors2= x; 
+      console.log("iniziation", this.meteors2.length); 
+      this.meteors= this.meteors.concat(this.meteors2)
+      
+      let totalMeteors= this.meteors.length
+      console.log("TOALE 2,", totalMeteors)
+      this.lastNumberPage= parseInt(String(totalMeteors).slice(0, String(totalMeteors).length- 3))
+      // localStorage.setItem("cacheMeteors", JSON.stringify(this.meteors))
+      
+    },
+    error: (e) => {this.errorFetch= true; console.log("SCATTATO ERROE")}});}
+    else{
+      this.meteors= JSON.parse(localStorage.getItem("cacheMeteors"))
+      console.log("cach met act 2")
+      this.isLoading=false
+
+    }
+  }, 3000)
+  }
+
+
 
   isCreatingMeteor: boolean= false
 

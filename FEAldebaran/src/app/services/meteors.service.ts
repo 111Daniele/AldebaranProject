@@ -30,13 +30,14 @@ export class MeteorsService {
   
     return this.http.get( environment.HOST + "CNEOS_API").pipe(map(res=> {
       let meteors= []; 
-      console.log("res", res["data"].slice(8000, 8050))
+      // console.log("res", res["data"].slice(8000, 8050))
+      console.log("MET SERVICE, ", res["data"])
     for (let met of res["data"]){ 
       // if (met.range === undefined){ console.log("attenz", met)}
       // console.log("m ", met.author)
       let author= met.author ? met.author : "CNEOS"
 
-      if (author=="Edo") console.log("TROVATO EDO£", met)
+      if (author=="Edd") console.log("TROVATO EDD", met)
       meteors.push(new Meteor(met.id, met.des, met.range, met.ps_max, met.fullname, met.v_inf, met.h, met.last_obs_jd, met.ip, met.ps_cum, met.last_obs, met.n_imp,met.diameter,met.ts_max, author))
     }
     return meteors
@@ -44,4 +45,30 @@ export class MeteorsService {
 
 
   }
+
+
+
+
+
+  getMeteors2(): Observable<any>{
+    return this.http.get( environment.HOST + "CNEOS_API2").pipe(map(res=> {
+      console.log("results API2 ", res )
+      let meteors= []; 
+      // console.log("res", res["data"].slice(8000, 8050))
+    for (let met of res["data"]){ 
+      // if (met.range === undefined){ console.log("attenz", met)}
+      // console.log("m ", met.author)
+      let author= met.author ? met.author : "CNEOS"
+
+      if (author=="Edd") console.log("TROVATO EDd", met)
+      meteors.push(new Meteor(met.id, met.des, met.range, met.ps_max, met.fullname, met.v_inf, met.h, met.last_obs_jd, met.ip, met.ps_cum, met.last_obs, met.n_imp,met.diameter,met.ts_max, author))
+    }
+    return meteors
+  } ))
+
+
+  }
+
+
+
 }

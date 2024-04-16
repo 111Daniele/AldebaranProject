@@ -19,9 +19,9 @@ require('dotenv').config({path: './config.env'})
 const app= exp();
 
 
-app.use(cors({origin: "https://aldebaranprojectfe.onrender.com"}));
+// app.use(cors({origin: 'https://aldebaranprojectfe.onrender.com'}));
 
-// app.use(cors({origin: 'http://localhost:4200'}));
+app.use(cors({origin: 'http://localhost:4200'}));
 
 
 app.use(exp.urlencoded({extended: true}))
@@ -135,7 +135,7 @@ console.log("meta app.js")
 
 app.get("/CNEOS_API", async (req, res) => {
   console.log("STARTED CNEOS API")
-  let meteors= await Meteor.find();
+  
   axios.get('https://ssd-api.jpl.nasa.gov/sentry.api')
 .then(function(response) {
     console.log(response.data.data[0]);
@@ -171,33 +171,57 @@ else if(met.v_inf=="NaN"){
   // console.log("tutto",response.data.data )
 
 
-  let meteorNASA= fetchData.fetchNasa()  //sdb_query_result
 
-  console.log("mnasa", meteorNASA.slice(0, 3))
 
-  let meteorGBM = fetchData.fecthGBM()  //Summary2024
-
-  console.log("prima ", response.data.data.slice(0,3))
-  console.log("seconda ",meteorGBM.slice(0, 3))
-    
-  let lung= meteorNASA.length
-  let countt=0
-  for (let met1 of meteorNASA){
-    if(!met1["v_inf"]) countt+=1
-  }
-  console.log("not velocity ", countt, meteorNASA.slice(1,30))
-  console.log("Total meteors number: ", response.data.data.concat(meteors).concat(meteorNASA).concat(meteorGBM).length)
-
-  let meteorsWithDuplicate= response.data.data.concat(meteors).concat(meteorNASA).concat(meteorGBM)
+ 
 
   // let meteorsNoDuplicate= meteorsWithDuplicate.filter((value, index, self)=> index== self.findIndex((other)=> other["v_inf"]==value["v_inf"] && other["diameter"]==value["diameter"] && other["range"] == value["range"] && other["magnitude"]== value["magnitude"]))
   // console.log("lunghezze", meteorsWithDuplicate.length, meteorsNoDuplicate.length)
  
-    res.status(200).json({status:"success", data: meteorsWithDuplicate})
+    res.status(200).json({status:"success", data: response.data.data})
 });}
 )
 
-  app.all("*", (req, res, next) => {console.log("altri endpoint"); next(new CustomError("aa", 400))})
+
+
+app.get("/CNEOS_API2", async (req, res) => {
+  console.log("api2 ACIVED")
+  let meteors= await Meteor.find();
+  let meteorNASA= fetchData.fetchNasa()  //sdb_query_result
+
+  
+
+console.log("mnasa", meteorNASA.slice(0, 3))
+
+let meteorGBM = fetchData.fecthGBM()  //Summary2024
+
+
+console.log("seconda ",meteorGBM.slice(0, 3))
+  
+let lung= meteorNASA.length
+let countt=0
+
+
+for (let met1 of meteorNASA){
+  if(!met1["v_inf"]) countt+=1
+}
+console.log("not velocity ", countt, meteorNASA.slice(1,30))
+
+
+let meteorsWithDuplicate= meteors.concat(meteorNASA).concat(meteorGBM)
+
+res.status(200).json({status:"success", data: meteorsWithDuplicate})
+
+
+})
+
+
+
+
+
+
+  
+app.all("*", (req, res, next) => {console.log("altri endpoint"); next(new CustomError("aa", 400))})
 
 app.use(errorController)
 
