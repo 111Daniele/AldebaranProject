@@ -58,7 +58,11 @@ export class UserComponent implements OnInit{
     console.log("l'id passato è ", this.idUser)
     this.userService.getUser(this.idUser).subscribe(x=> {console.log("risultato user", x);this.user= x["data"][0]; console.log("preleavto utente ", x["data"], "con iddd", x["data"][0]?.name )})
 
-    this.meteorService.getMeteors().subscribe(x => {this.meteors= x.filter(met=> { return met.author== this.idUser}); this.loaderMeteors=false; console.log("met", this.meteors, "lunghezza", this.meteors.length)})
+    this.meteorService.getMeteors().subscribe(x => {
+      this.meteors= x.filter(met=> { return met.author== this.idUser}); 
+      this.loaderMeteors=false; 
+      // console.log("meteors", this.meteors)
+      console.log("lunghezza", this.meteors.length)})
     
   }
 
