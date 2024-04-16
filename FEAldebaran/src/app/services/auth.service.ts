@@ -76,6 +76,7 @@ export class AuthService {
 
 
   logout(){
+    console.log("effettuato logout")
     this.user.next(null)
     localStorage.removeItem("user")
     if (this.tokenExpireTimer){  //IT'S IMPLIED THAT IT IS TRUE, BEVAUSE WHEN USER LOGGIN, IT A TOKENEXPIRE WILL BE CREATED

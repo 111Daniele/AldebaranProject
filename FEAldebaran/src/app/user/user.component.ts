@@ -62,6 +62,10 @@ export class UserComponent implements OnInit{
     
   }
 
+  
+  closeWindow(){
+    this.states.alertWindow = !this.states.alertWindow
+  }
 
 
 
@@ -73,6 +77,8 @@ export class UserComponent implements OnInit{
   sendMeteor(){
     this.auth.user.subscribe(u => this.user= u)
     console.log("user", this.user, "met£", this.rformMeteor.value)
+    this.rformMeteor.reset();
+    this.states.formAddMeteor= false
     this.http.post(environment.HOST + "users/addMeteor", {idName: this.user.id, meteor: this.rformMeteor.value}).subscribe()
   }
 

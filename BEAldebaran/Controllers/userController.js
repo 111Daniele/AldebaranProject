@@ -43,7 +43,7 @@ exports.handleSignup= asyncErrorHandler(async (req, res, next) => {
     const token= generateToken(user._id)
     console.log("token", token)
     console.log("utente", user)
-    return res.status(201).json({status: "success", token, data: {user}})
+    return res.status(201).json({status: "success", expires: +process.env.LOGIN_EXPIRES, token, data: {user}})
 
 })
 

@@ -20,7 +20,13 @@
 
 
 
-
+<!-- FORM FOR SHOW ALERT-->
+<div *ngIf="states.alertWindow">  
+  <div class="overlay"> </div>
+  <div class="alert"> <h2> YOU ARE NOT APPROVED! WAIT FOR APPROVAL! </h2><button (click)="closeWindow()"> OK</button> </div>
+  
+  
+  </div>
 
 
 

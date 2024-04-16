@@ -21,6 +21,9 @@ const app= exp();
 
 app.use(cors({origin: "https://aldebaranprojectfe.onrender.com"}));
 
+// app.use(cors({origin: 'http://localhost:4200'}));
+
+
 app.use(exp.urlencoded({extended: true}))
 
 app.use(exp.json());
