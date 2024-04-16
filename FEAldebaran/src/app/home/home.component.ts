@@ -207,7 +207,8 @@ export class HomeComponent implements OnInit{
   sendMeteor(){
     this.auth.user.subscribe(u => this.user= u)
     console.log("user", this.user, "met£", this.rformMeteor.value)
-    this.http.post(environment.HOST + "users/addMeteor", {idName: this.user.id, meteor: this.rformMeteor.value}).subscribe()
+    this.http.post(environment.HOST + "users/addMeteor", {idName: this.user.id, meteor: this.rformMeteor.value}).subscribe(x => {this.rformMeteor.reset(); this.states.formAddMeteor})
+
   }
 
 switchLoading(){
