@@ -1,8 +1,11 @@
-<div class="user-profile">  
+<div class="user-profile" #topPage>  
 
     <!-- <div class="name">  NOME: {{user?.name}}</div> -->
 
-    <div class="name">  NAME: {{idUser}}</div>
+    <div class="name">  NAME: {{idUser}} 
+      <div *ngIf="idUser == 'CNEOS'"> Link: <a href="https://cneos.jpl.nasa.gov/sentry/"> https://cneos.jpl.nasa.gov/sentry/</a></div>  
+     <div *ngIf="idUser== 'GMN'"> Link: <a href="https://globalmeteornetwork.org/data">https://globalmeteornetwork.org/data</a></div> 
+     <div *ngIf="idUser== 'NASA'">  Link: <a href="https://ssd.jpl.nasa.gov/tools/sbdb_query.html">https://ssd.jpl.nasa.gov/tools/sbdb_query.html</a></div>   </div> 
 
     <div class="data"> 
     <div class="registered"> Registered in Date:{{user?.registration | date: "dd MMMM yyyy"}} <div style="display: inline" *ngIf="!user?.registration"> 2024 </div> </div>
@@ -157,8 +160,76 @@
 
 
 
+<!-- BEGIN METEOR DETAIL-->
+<div class="overlay" *ngIf="meteorDetail">
+
+  <div class="graphics">  
+  <button class="closeGraphics" (click)="closeGraphics()"> X </button>
+  <div style="display: flex"> 
+  <div [chart]="chartVelocity">  
+  </div>
+
+  <div [chart]="chartHazard">    
+  </div>
+
+</div>
+
+<div style="display: flex"> 
+  <div [chart]="chartDiameter">    
+  </div>
+  <div [chart]="chartRange">    
+  </div>
+</div>
+
+<div class="trajectory">  View Trajectory: <a style="display:inline" href="https://ssd.jpl.nasa.gov/tools/orbit_viewer.html"> https://ssd.jpl.nasa.gov/tools/orbit_viewer.html </a></div>
+</div> <!-- END BOX 4 GRAPHICS-->
+
+</div>
+<!--END METEOR DETAIL-->
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+<!--begin FULL DATA METEOR-->
+
+<div class="overlay" *ngIf="showFullDataDetails">
+  <div style="display:flex; flex-direction: column ; padding: 10px 10px; background-color: rgba(255, 255, 255, 0.7)"> 
+    <button class="close" style="margin-right: 30px; margin-top: 15px;" (click)="closeFullData()"> X</button>
+<div style="padding-left: 30%; margin-bottom: 30px" *ngFor="let prop of keysDetails"> {{prop}}: {{fullDataDetails[prop]}}  </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--PAGINATOR-->
+<mat-paginator [length]="meteors2?.length"
+              [pageSize]="1000"
+              (page)="onPageChange($event)"
+              aria-label="Select page">
+              
+</mat-paginator>
+<!-- end paginator-->
 
 
 
@@ -170,6 +241,26 @@
     
     <div *ngIf="loaderMeteors" class="loader"> </div>
 
+
+<!-- ALTRE METEORS-->
+    <div *ngFor="let meteor of meteorsSlice" class="meteor"> 
+        
+      <div class="border-right"> ID: {{meteor.des}} </div>
+      <div class="border-right"> Diameter: {{meteor.diameter}}  </div>
+      <div class="border-right"> Magnitude: {{meteor.h}}  </div>
+      <div class="border-right"> Last Observation: {{meteor.last_obs}} </div>
+      <div class="border-right"> Range: {{meteor.range}}  </div>
+      <div class="border-right"> Hazard: {{meteor.ps_max | number: '1.2-2'}} </div>
+      <div> Velocity: {{meteor.v_inf | number: '1.2-2'}}  </div>
+      <button (click)="details(meteor)"> DETAILS </button>
+      <button (click)="fullData(meteor.des)"> FULL DATA </button>
+    
+    </div> <!--END FOR METEORS-->
+
+
+
+
+<!--meteore CNEOS-->
     <div *ngFor="let meteor of meteors" class="meteor"> 
         
         <div class="border-right"> ID: {{meteor.des}} </div>
@@ -179,10 +270,10 @@
         <div class="border-right"> Range: {{meteor.range}}  </div>
         <div class="border-right"> Hazard: {{meteor.ps_max | number: '1.2-2'}} </div>
         <div> Velocity: {{meteor.v_inf | number: '1.2-2'}}  </div>
-        
-        
+        <button (click)="details(meteor)"> DETAILS</button>
+        <button (click)="fullData(meteor.des)"> FULL DATA </button>
     
-    </div> 
+    </div> <!--END FOR METEORS-->
 
 
 </div>

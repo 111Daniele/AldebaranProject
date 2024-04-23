@@ -153,10 +153,10 @@ export class HomeComponent implements OnInit, AfterViewInit{
       let buildGraphHazard= this.buildGraphicHazard(this.meteors)
       let buildGraphRange= this.buildGraphicRange(this.meteors)
 
-      localStorage.setItem("cacheGraph", "true")
-      localStorage.setItem("cacheVelocity", JSON.stringify([this.velocityLess5, this.velocityLess10, this.velocityLess15, this.velocityLess20, this.velocityOver20]))
-      localStorage.setItem("cacheDiameter", JSON.stringify([this.diameterLess1, this.diameterLess2, this.diameterLess3,  this.diameterLess4, this.diameterLess5, this.diameterLess6, this.diameterOver6]))
-
+      // localStorage.setItem('cacheGraph', "true")
+      // localStorage.setItem("cacheVelocity", JSON.stringify([this.velocityLess5, this.velocityLess10, this.velocityLess15, this.velocityLess20, this.velocityOver20]))
+      // localStorage.setItem("cacheDiameter", JSON.stringify([this.diameterLess1, this.diameterLess2, this.diameterLess3,  this.diameterLess4, this.diameterLess5, this.diameterLess6, this.diameterOver6]))
+  
 
 
 

@@ -173,7 +173,6 @@ else if(met.v_inf=="NaN"){
 
 
 
- 
 
   // let meteorsNoDuplicate= meteorsWithDuplicate.filter((value, index, self)=> index== self.findIndex((other)=> other["v_inf"]==value["v_inf"] && other["diameter"]==value["diameter"] && other["range"] == value["range"] && other["magnitude"]== value["magnitude"]))
   // console.log("lunghezze", meteorsWithDuplicate.length, meteorsNoDuplicate.length)
@@ -217,6 +216,80 @@ res.status(200).json({status:"success", data: meteorsWithDuplicate})
 
 
 
+app.post("/allDetails", async (req, res)=> {
+
+  const {id}= req.body
+
+  console.log("ID è ", id)
+
+  axios.get('https://ssd-api.jpl.nasa.gov/sentry.api')
+.then(async function(response) {
+
+
+    response.data.data.map(m => {let d= m["diameter"]; let v=m["v_inf"]; m["v_inf"]=parseFloat(new Number(parseFloat(v)).toFixed(2)); d= parseFloat(parseFloat(d).toFixed(2)); m["diameter"]=d; return m})
+
+    //CANCELLARE MODELLI CON ERRORE DA API (o che hanno una data errata di formattazione o che non hanno veloctà)
+    
+
+    console.log("meteorrrr",response.data.data[0] )
+
+    const find1= response.data.data.filter(x=> x["des"]==id)
+
+    if(find1.length>0){
+      return res.status(200).json({status:"success", data: find1[0]})
+
+    }
+
+
+
+   
+
+    
+
+    //FIND METEOR DETAIL IN NASA AND GBM
+
+  let meteors= await Meteor.find();
+  let meteorNASA= fetchData.fetchNasa()  //sdb_query_result
+
+  
+
+console.log("mnasa", meteorNASA.slice(0, 3))
+
+let meteorGBM = fetchData.fecthGBM()  //Summary2024
+
+
+console.log("seconda ",meteorGBM.slice(0, 3))
+  
+let lung= meteorNASA.length
+let countt=0
+
+
+for (let met1 of meteorNASA){
+  if(!met1["v_inf"]) countt+=1
+}
+
+// console.log('not velocity ', countt, meteorNASA.slice(1,30))
+
+const find2= meteorNASA.concat(meteorGBM).filter(x=> x["des"]==id)
+
+    if(find2.length>0){
+      return res.status(200).json({status:"success", data: find2[0]})
+
+    }
+
+
+// let meteorsWithDuplicate= meteors.concat(meteorNASA).concat(meteorGBM)
+
+
+res.status(200).json({status:"success", data: []})
+
+
+
+    
+  
+})
+}
+)
 
 
 

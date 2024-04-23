@@ -26,6 +26,40 @@
   backdrop-filter: blur(2px);
 }
 
+.graphics{
+position: absolute;
+top: 30px;
+left: 50%;
+transform: translate(-50%, 0%);
+border-radius: 10px;
+}
+
+.trajectory{
+  /* display: flex; */
+  position: absolute;
+bottom:0;
+left: 50%;
+background-color: white;
+z-index: 10;
+font-size: 15px;
+color: black;
+transform: translate(-50%, 0%);
+}
+
+.closeGraphics{
+  position: absolute;
+  top: 30px;
+  right:30px;
+  z-index: 10;
+  background-color: red;
+  color: white;
+  cursor: pointer;
+  font-size: 30px
+}
+
+.closeGraphics:hover{
+  transform: scale(0.9);
+}
 
 .alert{
   width: 240px;
