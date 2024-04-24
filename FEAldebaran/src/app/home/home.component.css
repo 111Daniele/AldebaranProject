@@ -24,7 +24,6 @@
     height: 650px;
     background-color:rgb(43, 39, 39);
     margin-top: 30px;
-    /* padding-bottom: 400px */
 }
 
 .title-form-meteor{
@@ -157,8 +156,6 @@
 
 .home{
     position: relative;
-    /* height:600px; */
-    /* overflow: scroll; */
     background-image: url("./../../assets/background_home.png"); 
     min-height:80vh;
     padding-bottom: 85px
@@ -182,7 +179,6 @@ margin-right: 20px
   font-size: 20px;
   margin-right: 20px;
   color: white
-  /* margin-bottom:25px */
 }
 
 .loader{
@@ -204,7 +200,6 @@ margin-right: 20px
     height: 100%;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    /* padding: 20px 30px */
     padding-top: 20px;
     padding-bottom: 20px
 }
@@ -252,8 +247,6 @@ p{
     border-radius: 5px;
   text-align: center;
   margin: 4px 5px;
-  /* width: 7em;
-  height: 4em; */
   width: 5em;
   height: 3.5em;
   font-size: 20px;
@@ -292,7 +285,6 @@ p{
     top:40px;
     left:50%;
     transform: translate(-50%,-50%);
-    /* float: right; */
     border: 2px solid red;
     background-color: white;
     z-index:7;
