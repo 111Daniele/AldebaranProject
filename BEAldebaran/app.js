@@ -233,7 +233,10 @@ app.post("/allDetails", async (req, res)=> {
 
     console.log("meteorrrr",response.data.data[0] )
 
+    console.log("cerco id ", id)
     const find1= response.data.data.filter(x=> x["des"]==id)
+  
+    console.log("FIND 1 ", find1)
 
     if(find1.length>0){
       return res.status(200).json({status:"success", data: find1[0]})

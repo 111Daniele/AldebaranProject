@@ -21,6 +21,7 @@ export class UserComponent implements OnInit{
 
   constructor(public router: Router, public route: ActivatedRoute, public userService: UserService, public http: HttpClient, public auth: AuthService){}
 
+  loaderDetails= false
   idUser: any;
 
   showFullDataDetails= false
@@ -189,19 +190,32 @@ meteorsSlice
 
 
 
-  fullData(des){
+  fullData(meteor){
+    window.scroll({ 
+      top: 0, 
+      left: 0, 
+      behavior: 'instant'
+    });
+    this.showFullDataDetails=true;
+    this.loaderDetails= true;
+    console.log("meteor ", meteor)
+    const des= meteor["des"]
     this.http.post(environment.HOST + "allDetails", {id:des}).subscribe(
-      x=> {this.fullDataDetails= x["data"];
+      x=> {
+        console.log("Risposta iniziale", x)
+        console.log("loader attivo ")
+        this.fullDataDetails= x["data"];
          if (this.fullDataDetails["author"]==undefined)
           {this.fullDataDetails["author"]="CNEOS"} 
+         if (this.fullDataDetails["author"]!="CNEOS"){
+          this.fullDataDetails["ps_max"]= meteor["ps_max"]
+         }
+         console.log("loader disattivo ")
+         this.loaderDetails=false
          this.keysDetails= Object.keys(this.fullDataDetails)
          console.log("fullData ", this.fullDataDetails);
-         this.showFullDataDetails=true;
-         window.scroll({ 
-          top: 0, 
-          left: 0, 
-          behavior: 'instant'
-        });
+        
+         
         })
 
 

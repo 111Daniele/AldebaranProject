@@ -203,7 +203,8 @@
 <!--begin FULL DATA METEOR-->
 
 <div class="overlay" *ngIf="showFullDataDetails">
-  <div style="display:flex; flex-direction: column ; padding: 10px 10px; background-color: rgba(255, 255, 255, 0.7)"> 
+  <div *ngIf="loaderDetails" class="loader">  </div>
+  <div *ngIf="!loaderDetails" style="display:flex; flex-direction: column ; padding: 10px 10px; background-color: rgba(255, 255, 255, 0.7)"> 
     <button class="close" style="margin-right: 30px; margin-top: 15px;" (click)="closeFullData()"> X</button>
 <div style="padding-left: 30%; margin-bottom: 30px" *ngFor="let prop of keysDetails"> {{prop}}: {{fullDataDetails[prop]}}  </div>
 </div>
@@ -253,7 +254,7 @@
       <div class="border-right"> Hazard: {{meteor.ps_max | number: '1.2-2'}} </div>
       <div> Velocity: {{meteor.v_inf | number: '1.2-2'}}  </div>
       <button (click)="details(meteor)"> DETAILS </button>
-      <button (click)="fullData(meteor.des)"> FULL DATA </button>
+      <button (click)="fullData(meteor)"> FULL DATA </button>
     
     </div> <!--END FOR METEORS-->
 
@@ -271,7 +272,7 @@
         <div class="border-right"> Hazard: {{meteor.ps_max | number: '1.2-2'}} </div>
         <div> Velocity: {{meteor.v_inf | number: '1.2-2'}}  </div>
         <button (click)="details(meteor)"> DETAILS</button>
-        <button (click)="fullData(meteor.des)"> FULL DATA </button>
+        <button (click)="fullData(meteor)"> FULL DATA </button>
     
     </div> <!--END FOR METEORS-->
 
