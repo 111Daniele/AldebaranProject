@@ -245,7 +245,19 @@
 
 
 <!-- FORM SIGNUP AND LOGIN -->
-<div class="form" *ngIf="states.signup" > 
+<div style="
+  padding: 10px 10px;
+  position: absolute;
+  top:0%;
+  left:38%;
+  z-index:1;
+  border: 10px solid white;
+  border-radius: 20px;
+  width: 20%;
+  height: 510px;
+  background-color:rgb(43, 39, 39);
+  margin-top: 30px
+" *ngIf="states.signup" > 
 
     <form [formGroup]="rform">  
 
