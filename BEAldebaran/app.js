@@ -18,7 +18,7 @@ require('dotenv').config({path: './config.env'})
 
 const app= exp();
 
-
+ 
 app.use(cors({origin: 'https://aldebaranprojectfe.onrender.com'}));
 
 

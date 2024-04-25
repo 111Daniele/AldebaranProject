@@ -115,15 +115,18 @@ meteorsSlice
 
     console.log("l'id passato è ", this.idUser)
     this.userService.getUser(this.idUser).subscribe(x=> {console.log("risultato user", x);this.user= x["data"][0]; console.log("preleavto utente ", x["data"], "con iddd", x["data"][0]?.name )})
-
+    //RISOLTO CON LA CACHE
+    // if (this.idUser=="CNEOS"){
+    // this.meteorService.getMeteors().subscribe(x => {
+    //   console.log("LUNGHEZZA METEOREEEEEEEEEEE", x.length)
+    //   this.meteors= x.filter(met=> { return met.author== this.idUser}); 
+    //   this.loaderMeteors=false; 
+    //   console.log("lunghezza", this.meteors.length)})
+    
+    //CACHE
     if (this.idUser=="CNEOS"){
-    this.meteorService.getMeteors().subscribe(x => {
-      console.log("LUNGHEZZA METEOREEEEEEEEEEE", x.length)
-      this.meteors= x.filter(met=> { return met.author== this.idUser}); 
-      this.loaderMeteors=false; 
-      // console.log("meteors", this.meteors)
-      console.log("lunghezza", this.meteors.length)})
-
+    this.meteors= JSON.parse(localStorage.getItem("cacheMeteors"))
+    this.loaderMeteors=false
 
       if (true){
         this.setInitialValues(
