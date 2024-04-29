@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
@@ -20,11 +20,14 @@ import { PageEvent } from '@angular/material/paginator';
 export class UserComponent implements OnInit{
 
   constructor(public router: Router, public route: ActivatedRoute, public userService: UserService, public http: HttpClient, public auth: AuthService){}
+  
 
   loaderDetails= false
   idUser: any;
 
   showFullDataDetails= false
+
+  accordionCache=[]
 
   keysDetails
 
@@ -128,6 +131,12 @@ meteorsSlice
     this.meteors= JSON.parse(localStorage.getItem("cacheMeteors"))
     this.loaderMeteors=false
 
+    this.http.get(environment.HOST + "allDetails3").subscribe(
+      x=>{
+this.accordionCache= x["data"]
+      }
+    )
+
       if (true){
         this.setInitialValues(
           JSON.parse(localStorage.getItem("cacheVelocity")), 
@@ -135,17 +144,28 @@ meteorsSlice
         JSON.parse(localStorage.getItem("cacheHazard")),
         JSON.parse(localStorage.getItem("cacheRange")))
       }
+
+      
     }
 
+  
+    //è utente qualsiais o gbm o nasa
     else{
       this.meteorService.getMeteors2().subscribe(x => {
         console.log("LUNGHEZZA METEOREEEEEEEEEEE", x.length)
         this.meteors2= x.filter(met=> { return met.author== this.idUser}); 
         this.loaderMeteors=false; 
         this.meteorsSlice= this.meteors2.slice(0,1000)
-        // console.log("meteors", this.meteors)
-        // console.log("lunghezza", this.meteors.length)
+
+        
       })
+
+      //prelevo accoridon
+      this.http.post(environment.HOST + "allDetails2", {author:this.idUser}).subscribe(
+        x=>{
+this.accordionCache= x["data"]
+        }
+      )
   
   
         if (true){
@@ -156,6 +176,7 @@ meteorsSlice
           JSON.parse(localStorage.getItem("cacheRange")))
         }
 
+       
     }
     
   }
@@ -188,6 +209,30 @@ meteorsSlice
     this.rformMeteor.reset();
     this.states.formAddMeteor= false
     this.http.post(environment.HOST + "users/addMeteor", {idName: this.user.id, meteor: this.rformMeteor.value}).subscribe()
+  }
+
+
+
+  fullData2(meteor){
+    const des= meteor["des"]
+    this.http.post(environment.HOST + "allDetails", {id:des}).subscribe(
+      x=> {
+        console.log("Risposta iniziale", x)
+        console.log("loader attivo ")
+        this.fullDataDetails= x["data"];
+         if (this.fullDataDetails["author"]==undefined)
+          {this.fullDataDetails["author"]="CNEOS"} 
+         if (this.fullDataDetails["author"]!="CNEOS"){
+          this.fullDataDetails["ps_max"]= meteor["ps_max"]
+         }
+         console.log("loader disattivo ")
+         this.loaderDetails=false
+         this.keysDetails= Object.keys(this.fullDataDetails)
+         console.log("fullData ", this.fullDataDetails);
+        
+         
+        })
+
   }
 
 
@@ -415,12 +460,47 @@ closeGraphics(){
 
 
 
+prelevaAccordion(){
+
+  var acc= document.getElementsByClassName("accordion");
+var lun= acc.length
+  
+  // for (let k=0; k<10000000000; k++){}
+  console.log("acc", acc, acc["length"])
+  
+  
+  for (let i = 0; i < acc.length; i++) {
+    console.log(1)
+    acc[i].addEventListener("click", function() {
+     console.log("toccato accordion")
+      this.classList.toggle("active");
+  
+      
+      var panel = this.parentElement.nextElementSibling
+      if (panel.style.display === "block") {
+        panel.style.display = "none";
+      } else {
+        panel.style.display = "block";
+      }
+    });
+  }
+  }
 
 
 
+provaAccordion(event: MouseEvent){
+  console.log("ee", event.target)
+  let aus=  ( <HTMLElement>event.target )
+  var panel = aus.parentElement.nextElementSibling as HTMLElement
 
+  console.log("pannello", panel)
+  if (panel.style.display === "block") {
+    panel.style.display = "none";
+  } else {
+    panel.style.display = "block";
+  }
 
-
+}
 
 
 

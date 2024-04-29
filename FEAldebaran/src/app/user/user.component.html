@@ -244,8 +244,9 @@
 
 
 <!-- ALTRE METEORS-->
-    <div *ngFor="let meteor of meteorsSlice" class="meteor"> 
-        
+    <div *ngFor="let meteor of meteorsSlice; let i=index" > 
+
+      <div class="meteor">     
       <div class="border-right"> ID: {{meteor.des}} </div>
       <div class="border-right"> Diameter: {{meteor.diameter}}  </div>
       <div class="border-right"> Magnitude: {{meteor.h}}  </div>
@@ -254,27 +255,52 @@
       <div class="border-right"> Hazard: {{meteor.ps_max | number: '1.2-2'}} </div>
       <div> Velocity: {{meteor.v_inf | number: '1.2-2'}}  </div>
       <button (click)="details(meteor)"> DETAILS </button>
-      <button (click)="fullData(meteor)"> FULL DATA </button>
-    
+      <button (click)="provaAccordion($event)" class="accordion"> FULL DATA </button>  <!-- HO TOTLRO (click)="fullData(meteor)" -->
+    </div>
+
+    <div class="panel" style="">
+      <div class="dettagliMeteora"> 
+        <div *ngFor="let p of meteor|keyvalue" style="margin-bottom: 5px"> {{p.key}} {{p.value}}</div>
+      </div>
+    </div>
+
     </div> <!--END FOR METEORS-->
 
 
 
 
 <!--meteore CNEOS-->
-    <div *ngFor="let meteor of meteors" class="meteor"> 
-        
-        <div class="border-right"> ID: {{meteor.des}} </div>
-        <div class="border-right"> Diameter: {{meteor.diameter}}  </div>
-        <div class="border-right"> Magnitude: {{meteor.h}}  </div>
-        <div class="border-right"> Last Observation: {{meteor.last_obs}} </div>
-        <div class="border-right"> Range: {{meteor.range}}  </div>
-        <div class="border-right"> Hazard: {{meteor.ps_max | number: '1.2-2'}} </div>
-        <div> Velocity: {{meteor.v_inf | number: '1.2-2'}}  </div>
-        <button (click)="details(meteor)"> DETAILS</button>
-        <button (click)="fullData(meteor)"> FULL DATA </button>
     
-    </div> <!--END FOR DIV METEORS-->
+
+    <div *ngFor="let meteor of meteors; let i=index" > 
+
+      <div class="meteor">     
+      <div class="border-right"> ID: {{meteor.des}} </div>
+      <div class="border-right"> Diameter: {{meteor.diameter}}  </div>
+      <div class="border-right"> Magnitude: {{meteor.h}}  </div>
+      <div class="border-right"> Last Observation: {{meteor.last_obs}} </div>
+      <div class="border-right"> Range: {{meteor.range}}  </div>
+      <div class="border-right"> Hazard: {{meteor.ps_max | number: '1.2-2'}} </div>
+      <div> Velocity: {{meteor.v_inf | number: '1.2-2'}}  </div>
+      <button (click)="details(meteor)"> DETAILS </button>
+      <button (click)="provaAccordion($event)" class="accordion"> FULL DATA </button>  <!-- HO TOTLRO (click)="fullData(meteor)" -->
+    </div>
+
+    <div class="panel" style="">
+      <div class="dettagliMeteora"> 
+        <div *ngFor="let p of meteor|keyvalue" style="margin-bottom: 5px"> {{p.key}} {{p.value}}</div>
+      </div>
+    </div>
+
+    </div> <!-- END METEOR CNEOS-->
+
+
+
+
+
+
+
+
 
 
 </div>

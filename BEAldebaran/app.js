@@ -217,6 +217,89 @@ res.status(200).json({status:"success", data: meteorsWithDuplicate})
 
 
 
+// RETURN DETAILS OF ALL METEORS
+app.post("/allDetails2", async (req, res)=> {
+  console.log("AUTH", req.body)
+  const {author}= req.body
+  let meteors= await Meteor.find();
+  let meteorNASA= fetchData.fetchNasa()  //sdb_query_result
+
+  
+
+console.log("mnasa", meteorNASA.slice(0, 3))
+
+let meteorGBM = fetchData.fecthGBM()  //Summary2024
+
+
+console.log("seconda ",meteorGBM.slice(0, 3))
+  
+let lung= meteorNASA.length
+let countt=0
+
+
+for (let met1 of meteorNASA){
+  if(!met1["v_inf"]) countt+=1
+}
+
+// console.log('not velocity ', countt, meteorNASA.slice(1,30))
+
+
+
+    if(author=="NASA"){
+      return res.status(200).json({status:"success", data: meteorNASA})
+
+    }
+
+    if(author=="GBM"){
+      return res.status(200).json({status:"success", data: meteorGBM})
+
+    }
+
+// let meteorsWithDuplicate= meteors.concat(meteorNASA).concat(meteorGBM)
+
+
+res.status(200).json({status:"success", data: []})
+  
+
+})
+
+
+
+//GET ALL DETAILS OF CNEOS METEORS
+app.get("/allDetails3", async (req, res)=> {
+
+  axios.get('https://ssd-api.jpl.nasa.gov/sentry.api')
+  .then(async function(response) {
+  
+  
+      response.data.data.map(m => {let d= m["diameter"]; let v=m["v_inf"]; m["v_inf"]=parseFloat(new Number(parseFloat(v)).toFixed(2)); d= parseFloat(parseFloat(d).toFixed(2)); m["diameter"]=d; return m})
+
+      res.status(200).json({status:"success", data: response.data.data})
+  }
+
+)
+  
+
+
+
+
+
+
+  
+
+})
+
+
+
+
+
+
+
+
+
+
+
+//GIVEN AN ID RETURN DETAILS OF THAT ID
 app.post("/allDetails", async (req, res)=> {
 
   const {id}= req.body
