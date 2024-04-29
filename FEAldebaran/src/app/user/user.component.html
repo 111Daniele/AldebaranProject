@@ -312,6 +312,86 @@
 </div>
 
 
+
+
+
+
+
+
+
+<!-- BEGIN FORM SIGNUP E LOGIN-->
+
+
+<div style="
+  padding: 10px 10px;
+  position: absolute;
+  top:0%;
+  left:38%;
+  z-index:1;
+  border: 10px solid white;
+  border-radius: 20px;
+  width: 20%;
+  height: 510px;
+  background-color:rgb(43, 39, 39);
+  margin-top: 90px
+" *ngIf="states.signup" > 
+
+    <form [formGroup]="rform">  
+
+      <button class="close" (click)="close()"> X</button>
+    <div class="title-form">  <p> {{states.login ? "LOGIN" : "SIGNUP" }}</p> </div> 
+      <div class="fields"> <!-- BEGIN ALL FIELDS DIV -->
+    
+
+        <div class="example-container">
+         
+            <mat-form-field>
+              <mat-label>Enter your name</mat-label>
+              <input matInput placeholder="name" formControlName="name"/>
+              
+            </mat-form-field>
+          </div>
+          
+
+          
+
+        <div class="example-container">
+  <mat-form-field>
+    <mat-label>Enter your email</mat-label>
+    <input matInput placeholder="pat@example.com" formControlName="email"/>
+    
+  </mat-form-field>
+</div>
+
+
+
+
+      <mat-form-field>
+    <mat-label>Enter your password</mat-label>
+    <input matInput [type]="hide ? 'password' : 'text'" placeholder="$pwd1234" formControlName="password">
+    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+  </mat-form-field>
+
+</div> <!-- CLOSE ALL FIELDS DIV -->
+
+
+    <button class="send" (click)="sendForm()"> SEND</button>
+    </form>
+
+</div>
+
+
+
+
+<!--END FORM SIGNUP LOGIN-->
+
+
+
+
+
+
 </div> <!-- USERPROFILE -->
 
 <!-- <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon"></mat-icon> -->

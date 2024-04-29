@@ -1,9 +1,9 @@
 .form-meteor{
   padding: 10px 10px;
     position: absolute;
-    top:0%;
-    left:38%;
-    z-index:1;
+    top:50px;
+    left:30%;
+    z-index:25;
     border: 10px solid white;
     border-radius: 20px;
     width: 40%;

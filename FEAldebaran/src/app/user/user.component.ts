@@ -90,15 +90,26 @@ meteorsSlice
   range2100=0
   rangeOver2100=0
 
+  errorLogin: boolean= false
+
   chartVelocity
   chartDiameter
   chartHazard
   chartRange
 
+  rform: FormGroup
 
+  hide=true
 
   ngOnInit(): void {
     console.log("iniz user")
+
+    this.rform= new FormGroup({
+      name: new FormControl(),
+      email: new FormControl(),
+      password: new FormControl()
+    })
+    
 
    this.rformMeteor= new FormGroup(
       {
@@ -181,6 +192,30 @@ this.accordionCache= x["data"]
     
   }
 
+  sendForm(){
+    if (!this.states.login) this.signupUser()
+    else this.loginUser()
+  }
+
+  signupUser(){
+    
+    console.log("signup")
+    const user= this.rform.value
+    console.log(user)
+    this.auth.signup(user).subscribe()
+    this.states.signup= false
+  }
+
+
+  loginUser(){
+    
+    console.log("login")
+    const user= this.rform.value
+    this.auth.login(user).subscribe({
+      next:  (res)=>{this.rform.reset(); this.states.signup= false} ,
+      error: (err)=>{console.log("error"); this.rform.reset(); this.errorLogin= true}
+    })
+  }
 
   onPageChange(event: PageEvent){
     const startIndex= event.pageIndex * event.pageSize
@@ -191,7 +226,11 @@ this.accordionCache= x["data"]
     this.meteorsSlice= this.meteors2.slice(startIndex, endIndex)
   }
 
-  
+  close(){
+    this.states.signup= false
+    this.errorLogin= false
+  }
+
   closeWindow(){
     this.states.alertWindow = !this.states.alertWindow
   }

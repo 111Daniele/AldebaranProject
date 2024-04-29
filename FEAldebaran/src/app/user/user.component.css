@@ -212,8 +212,8 @@ transform: translate(-50%, 0%);
   .form-meteor{
     padding: 10px 10px;
       position: absolute;
-      top:0%;
-      left:38%;
+      top:7%;
+      left:30%;
       z-index:1;
       border: 10px solid white;
       border-radius: 20px;
@@ -321,3 +321,66 @@ transform: translate(-50%, 0%);
       display: none;
       overflow: hidden;
     }
+
+
+
+
+    /* CSS FORM LOGIN */
+
+    .example-container mat-form-field + mat-form-field {
+      margin-left: 8px;
+    }
+    
+    .example-right-align {
+      text-align: right;
+    }
+  
+    
+.close{
+  background-color: red;
+  color:white;
+  display: block;
+  margin-left: 90%;
+  cursor:pointer;
+  font-size: 30px;
+  
+
+}
+
+.fields{
+  /* margin-top: 10px; */
+  margin-left: 10%;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  justify-content: center;
+  align-items: center;
+  height: 300px
+  /* border: 2px solid red */
+}
+
+
+.send{
+  background-color: green;
+  color: white;
+  font-family: fantasy;
+  font-size: 30px;
+  width: 110px;
+  height: 60px;
+  border-radius: 20px;
+  cursor:pointer;
+  margin-left: 60%;
+  margin-top: 10px
+}
+
+.title-form{
+  font-size: 40px;
+  margin-top: 10px;
+  border-bottom: 5px solid red;
+  text-align: center;
+  color: white;
+  margin-bottom: 20px;
+  width: fit-content;
+  margin-left: 50%;
+  transform: translate(-50%,0);
+}

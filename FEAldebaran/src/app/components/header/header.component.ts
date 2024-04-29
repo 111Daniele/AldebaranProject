@@ -26,6 +26,11 @@ export class HeaderComponent implements OnInit{
   isLogged: boolean= this.user ? true : false
 
   signup(){
+    window.scroll({ 
+      top: 0, 
+      left: 0, 
+      behavior: 'instant'
+    });
     this.states.signup= true;
     this.states.login=false;
     console.log(this.states.signup)
@@ -38,6 +43,11 @@ export class HeaderComponent implements OnInit{
   }
 
   login(){
+    window.scroll({ 
+      top: 0, 
+      left: 0, 
+      behavior: 'instant'
+    });
     this.states.signup= true;
     this.states.login= true;
     console.log(this.states.signup)
@@ -51,6 +61,11 @@ export class HeaderComponent implements OnInit{
 
 
   addMeteor(){
+    window.scroll({ 
+      top: 0, 
+      left: 0, 
+      behavior: 'instant'
+    });
     console.log("attivo form add")
     let allowed= ["approved", "admin"]
     // if (!this.user || this.user.role!= "approved") return window.alert("YOU ARE NOT APPROVED! WAIT FOR APPROVAL!")
