@@ -6,7 +6,12 @@
     /* justify-content: space-between; */
     align-items: center;
     padding: 10px 20px;
-    color: white
+    color: white;
+   position: fixed;
+   width:97%;
+   z-index: 20;
+   margin-top: 0
+  
 }
 
 

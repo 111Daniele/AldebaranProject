@@ -1,4 +1,4 @@
-<div class="user-profile" #topPage>  
+<div class="user-profile" #topPage style="padding-top:90px">  
 
     <!-- <div class="name">  NOME: {{user?.name}}</div> -->
 
@@ -161,7 +161,7 @@
 
 
 <!-- BEGIN METEOR DETAIL-->
-<div class="overlay" *ngIf="meteorDetail">
+<div class="overlay" *ngIf="meteorDetail" style="margin-top:90px">
 
   <div class="graphics">  
   <button class="closeGraphics" (click)="closeGraphics()"> X </button>
@@ -202,7 +202,7 @@
 
 <!--begin FULL DATA METEOR-->
 
-<div class="overlay" *ngIf="showFullDataDetails">
+<div class="overlay" *ngIf="showFullDataDetails" style="margin-top:90px">
   <div *ngIf="loaderDetails" class="loader">  </div>
   <div *ngIf="!loaderDetails" style="display:flex; flex-direction: column ; padding: 10px 10px; background-color: rgba(255, 255, 255, 0.7)"> 
     <button class="close" style="margin-right: 30px; margin-top: 15px;" (click)="closeFullData()"> X</button>

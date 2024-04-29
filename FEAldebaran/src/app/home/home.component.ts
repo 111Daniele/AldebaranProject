@@ -30,6 +30,8 @@ export class HomeComponent implements OnInit, AfterViewInit{
 
   hide = true;
 
+  fetchSecondPart= false
+  
   velocityLess5=0
   velocityLess10=0
   velocityLess15=0
@@ -289,7 +291,8 @@ export class HomeComponent implements OnInit, AfterViewInit{
       let totalMeteors= this.meteors.length
       console.log("TOALE 2,", totalMeteors)
       this.lastNumberPage= parseInt(String(totalMeteors).slice(0, String(totalMeteors).length- 3))
-      localStorage.setItem("cacheGraph", "true")
+      localStorage.setItem("cacheGraph", "true");
+      this.fetchSecondPart= true
       // localStorage.setItem("cacheMeteors", JSON.stringify(this.meteors))
       
     },

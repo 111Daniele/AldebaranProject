@@ -7,10 +7,11 @@
 
 <div *ngIf="errorLogin" class="overlay"> <p style="color:red; padding-left:30%; padding-top: 20%"> ERROR LOGIN <button style="margin-right: 20%; "   class="refresh" (click)="close()">CLOSE</button> </p></div>
 
+<div *ngIf="!fetchSecondPart" style="height:90px">  </div>
 
-<div *ngIf="!isLoading && !errorFetch">  
+<div *ngIf="!isLoading && !errorFetch && fetchSecondPart">  
 
-<div class="buttons_container"> 
+<div class="buttons_container" style="padding-top: 90px"> 
 <button class="filter_button" (click)="sortMeteors('v_inf')"> Velocity {{fields["v_inf"]== "none" ? "" : fields["v_inf"]== "asc" ? "↓" : "↑"}} </button>
 
 <button class="filter_button" (click)="sortMeteors('diameter')"> Diameter {{fields["diameter"]== "none" ? "" : fields["diameter"]== "asc" ? "↓" : "↑"}} </button>
