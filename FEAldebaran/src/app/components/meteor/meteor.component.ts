@@ -17,4 +17,7 @@ export class MeteorComponent {
     this.router.navigate(["/users/", author])
   }
 
+  showDetail(meteor){
+    console.log("click card", meteor)
+  }
 }

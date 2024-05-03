@@ -25,6 +25,8 @@ export class UserComponent implements OnInit{
   loaderDetails= false
   idUser: any;
 
+
+
   showFullDataDetails= false
 
   accordionCache=[]
@@ -37,7 +39,7 @@ export class UserComponent implements OnInit{
 
   meteorDetail=false
 
-  
+  meteorInExam
 
   states: StatesService= inject(StatesService)
 
@@ -327,6 +329,7 @@ window.scroll({
   behavior: 'instant'
 });
 
+this.meteorInExam= meteor
 
     // this.router.navigate([url1, url2], { fragment: 'topPage' })
     this.meteorDetail= true

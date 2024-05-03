@@ -1,4 +1,4 @@
-<mat-card class="example-card" [ngClass]="{'red': +meteor.ps_max>=-3, 'yellow': +meteor.ps_max<-3 && +meteor.ps_max>-5, 'green': +meteor.ps_max<=-5}">
+<div style="color: red;" (click)="showDetail(meteor)"><mat-card class="example-card" [ngClass]="{'red': +meteor.ps_max>=-3, 'yellow': +meteor.ps_max<-3 && +meteor.ps_max>-5, 'green': +meteor.ps_max<=-5}">
     <mat-card-header class="card-header">
       <div class="id" [ngClass]="{'redd': +meteor.ps_max>=-3, 'yelloww': +meteor.ps_max<-3 && +meteor.ps_max>-5, 'greenn': +meteor.ps_max<=-5}">{{meteor.id}}</div>
       <div class="des">{{meteor.des}}</div>
@@ -16,7 +16,7 @@
       <p> Range:  {{ meteor.range}}</p>
       <p> Hazard:  {{ meteor.ps_max | number: "1.1-2"}}</p>
       <p style="border-bottom: 2px solid red; padding-bottom: 10px"> Velocity:  {{ meteor.v_inf|number:"1.1-2"}}km/s</p>
-      <p style="display: inline-block; padding-top:10px; padding-right:20px">DISCOVERED BY: </p>  <button (click)="viewStudy(meteor.author)" class="removeindex" [routerLink]="['user/1']"  mat-raised-button color="primary">{{meteor.author}}</button>
+      <p style="display: inline-block; padding-top:10px; padding-right:20px">LISTED IN: </p>  <button (click)="viewStudy(meteor.author)" class="removeindex" [routerLink]="['user/1']"  mat-raised-button color="primary">{{meteor.author}}</button>
       <mat-divider></mat-divider>
     </mat-card-content>
 
@@ -31,5 +31,5 @@
       <p style="display: inline-block; padding-top:10px; padding-right:20px">DISCOVERED BY: </p>  <button    mat-raised-button color="primary">{{"CNEOS"}}</button>
     </mat-card-footer> -->
   </mat-card>
-
+</div>
 

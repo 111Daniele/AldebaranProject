@@ -31,6 +31,10 @@ export class HomeComponent implements OnInit, AfterViewInit{
   hide = true;
 
   fetchSecondPart= false
+
+  CNEOSFilterActive= false;
+  NASAFilterActive= false;
+  GMNFilterActive= false
   
   velocityLess5=0
   velocityLess10=0
@@ -66,6 +70,7 @@ export class HomeComponent implements OnInit, AfterViewInit{
   page= 1000;
 
   lastNumberPage: any
+  backupLastNumberPage: any
 
   fields= {"diameter": "none", "v_inf": "none", "ps_max": "none", "n_imp": "none", "range": "none", "last_obs": "none", "h": "none" }
   
@@ -84,19 +89,35 @@ export class HomeComponent implements OnInit, AfterViewInit{
 
   alertWindow: boolean= false
 
+  tuttidettaglimeteora= false
+
   velocity: string= "asc"
 
   user: User
 
   chartRange
+  
+  atLeastOneFilterActive= false
 
   errorFetch: boolean= false
 
   errorLogin: boolean= false
 
+  backupMeteors
+
+  meteoradamostraredettagli
+
   chartVelocity
   chartDiameter
   chartHazard
+
+
+  backupChartVelocity
+  backupChartDiameter
+  backupChartHazard
+  backupChartRange
+
+  lastFilterActive
 
   meteors2
   
@@ -144,6 +165,7 @@ export class HomeComponent implements OnInit, AfterViewInit{
         this.isLoading=false;
         let totalMeteors= this.meteors.length
         this.lastNumberPage= parseInt(String(totalMeteors).slice(0, String(totalMeteors).length- 3))
+        this.backupLastNumberPage= parseInt(String(totalMeteors).slice(0, String(totalMeteors).length- 3))
         console.log("ending 1", this.meteors)
         localStorage.setItem("cacheMeteors", JSON.stringify(this.meteors))
 
@@ -287,10 +309,12 @@ export class HomeComponent implements OnInit, AfterViewInit{
 
 
       this.meteors= this.meteors.concat(this.meteors2)
-      
+      this.backupMeteors= this.meteors
+
       let totalMeteors= this.meteors.length
       console.log("TOALE 2,", totalMeteors)
       this.lastNumberPage= parseInt(String(totalMeteors).slice(0, String(totalMeteors).length- 3))
+      this.backupLastNumberPage= parseInt(String(totalMeteors).slice(0, String(totalMeteors).length- 3))
       localStorage.setItem("cacheGraph", "true");
       this.fetchSecondPart= true
       // localStorage.setItem("cacheMeteors", JSON.stringify(this.meteors))
@@ -303,7 +327,7 @@ export class HomeComponent implements OnInit, AfterViewInit{
       this.isLoading=false
 
     }
-  }, 3000)
+  }, 1000)
   }
 
 
@@ -312,7 +336,77 @@ export class HomeComponent implements OnInit, AfterViewInit{
 
   signup: boolean= this.states.signup
 
+  provaAccordion(meteor){
+    this.tuttidettaglimeteora=true
+    this.meteoradamostraredettagli=meteor
+    console.log("ok tutti dettagli")
   
+  }
+  
+ filterMeteors(id){
+  this.page=1000
+  if (this.atLeastOneFilterActive){
+    if(this.lastFilterActive==id){
+      console.log("same active ", this.backupMeteors.length)
+      this.meteors= this.backupMeteors
+      this.lastNumberPage= this.backupLastNumberPage
+      console.log("last number ",this.lastNumberPage)
+      this.selected_meteors= this.meteors.slice(0,this.page)
+      this.CNEOSFilterActive= false;
+    this.GMNFilterActive= false;
+    this.NASAFilterActive= false;
+    this.atLeastOneFilterActive=false
+
+    // RESET GRAPH WITH DATE IN CACHE
+    this.setInitialValues(JSON.parse(localStorage.getItem("cacheVelocity")), 
+      JSON.parse(localStorage.getItem("cacheDiameter")),
+      JSON.parse(localStorage.getItem("cacheHazard")),
+      JSON.parse(localStorage.getItem("cacheRange")))
+
+      this.chartVelocity=this.buildChartVelocity()
+      this.chartDiameter= this.buildChartDiameter()
+      this.chartHazard= this.buildChartHazard()
+      this.chartRange= this.buildChartRange()
+
+    return
+    }
+    this.CNEOSFilterActive= false;
+    this.GMNFilterActive= false;
+    this.NASAFilterActive= false;
+    this.meteors= this.backupMeteors
+    this.lastNumberPage= this.backupLastNumberPage
+    console.log("last number ",this.lastNumberPage)
+    this.selected_meteors= this.meteors.slice(0,this.page)
+  }
+  this.atLeastOneFilterActive= true
+  this.lastFilterActive= id
+  console.log("clicked on ", id, this.meteors.length)
+    this.meteors  = this.meteors.filter(x=> x["author"]==id)
+    this.backupLastNumberPage= this.lastNumberPage
+    this.lastNumberPage= parseInt(String(this.meteors.length).slice(0, String(this.meteors.length).length- 3))
+    this.selected_meteors= this.meteors.slice(0,this.page)
+
+    console.log("build graphics", this.meteors.length)
+
+    this.buildGraphicDiameter(this.meteors, true)
+    this.buildGraphicHazard(this.meteors, true)
+    this.buildGraphicVelocity(this.meteors, true)
+    this.buildGraphicRange(this.meteors, true)
+    this.chartVelocity=this.buildChartVelocity()
+      this.chartDiameter= this.buildChartDiameter()
+      this.chartHazard= this.buildChartHazard()
+      this.chartRange= this.buildChartRange()
+
+    console.log("after selection ", this.meteors.length)
+    if (id=="CNEOS") {this.CNEOSFilterActive=true; console.log("active cneos filter ", this.CNEOSFilterActive)}
+    else if(id=="NASA"){this.NASAFilterActive= true; console.log("active NASA filter", this.NASAFilterActive)}
+    else if (id=="GMN"){this.GMNFilterActive= true}
+    else{console.log("altro")}
+ }
+
+  closeDettagliMeteora(){
+    this.tuttidettaglimeteora= undefined
+  }
 
   show(){
     console.log("eee", this.states.signup);
@@ -583,7 +677,13 @@ switchLoading(){
   
 
 
-  buildGraphicVelocity(meteors){
+  buildGraphicVelocity(meteors, resetValues=false){
+    if (resetValues){
+    this.velocityLess5=0
+    this.velocityLess10=0
+    this.velocityLess15=0
+     this.velocityLess20=0
+      this.velocityOver20=0}
     for (let met of meteors){
       if (parseFloat(met["v_inf"])<5){
         this.velocityLess5 +=1 
@@ -606,7 +706,15 @@ switchLoading(){
 
 
 
-  buildGraphicDiameter(meteors){
+  buildGraphicDiameter(meteors, resetValues=false){
+    if (resetValues){
+    this.diameterLess1 =0
+    this.diameterLess2=0
+    this.diameterLess3=0
+    this.diameterLess4=0
+    this.diameterLess5=0
+    this.diameterLess6=0
+    this.diameterOver6=0}
     for (let met of meteors){
       if (parseFloat(met["diameter"])<0.5){
         this.diameterLess1 +=1 
@@ -636,7 +744,14 @@ switchLoading(){
 
 
 
-  buildGraphicHazard(meteors){
+  buildGraphicHazard(meteors, resetValues=false){
+    if (resetValues){
+    this.hazardLess12 =0
+    this.hazardLess10=0
+    this.hazardLess8=0
+    this.hazardLess6=0
+    this.hazardLess4=0
+    this.hazardOver4=0}
     for (let met of meteors){
       // console.log("NUMERO" ,parseFloat(met["ps_max"]))
       
@@ -668,7 +783,17 @@ switchLoading(){
 
 
 
-  buildGraphicRange(meteors){
+  buildGraphicRange(meteors, resetValues=false){
+    if (resetValues){
+    this.range2030=0
+    this.range2040=0
+    this.range2050=0
+    this.range2060=0
+    this.range2070=0
+    this.range2080=0
+    this.range2090=0
+    this.range2100=0
+    this.rangeOver2100=0}
     for (let met of meteors){
       let date1= met["range"].split("-")
       // console.log("NUMERO" ,parseFloat(met["ps_max"]))
