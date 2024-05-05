@@ -245,6 +245,10 @@ p{
     text-align: right;
   }
 
+  .slider{
+    background-color: black; color: white;
+    
+  }
   
 
   .paginate_button{

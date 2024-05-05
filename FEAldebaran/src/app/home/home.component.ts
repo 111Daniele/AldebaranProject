@@ -11,6 +11,7 @@ import { User } from '../Models/User';
 import { environment } from 'src/environments/environment';
 
 import { Chart } from 'angular-highcharts';
+import { Options } from '@angular-slider/ngx-slider';
 
 
 
@@ -26,7 +27,60 @@ export class HomeComponent implements OnInit, AfterViewInit{
 
   }
 
+  valueVelocity: number = 0;
+  highValueVelocity:number= 42
+  optionsVelocity: Options = {
+    floor: 1,
+    ceil: 42
+  };
+  
+  valueDiameter: number = 0;
+  highValueDiameter:number= 7
+  optionsDiameter: Options = {
+    floor: 0,
+    ceil: 7
+  };
+
+  valueHazard: number = -12;
+  highValueHazard:number= -2
+  optionsHazard: Options = {
+    floor: -12,
+    ceil: -2
+  };
+
+  valueMagnitude: number= 13
+  highValueMagnitude: number= 33
+  optionsMagnitude: Options = {
+    floor: 13,
+    ceil: 33
+  };
+
+  valueLastObs: number= 1979
+  highValueLastObs: number= 2024
+  optionsLastObs: Options = {
+    floor: 1979,
+    ceil: 2024
+  };
+
+  valueRange: number= 2024
+  highValueRange: number= 2880
+  optionsRange: Options = {
+    floor: 2024,
+    ceil: 2880
+  };
+
   meteors: Meteor[]
+
+  filteredMeteors= []
+
+  filteringData: boolean= false
+
+  filteringVelocity= false
+  filteringDiameter= false
+  filteringHazard= false
+  filteringMagnitude= false
+  filteringLastObs= false
+  filteringRange= false
 
   hide = true;
 
@@ -66,6 +120,14 @@ export class HomeComponent implements OnInit, AfterViewInit{
   range2090=0
   range2100=0
   rangeOver2100=0
+
+
+  activeFilterVelocity
+  activeFilterDiameter
+  activeFilterRange
+  activeFilterHazard
+  activeFilterMagnitude
+  activeFilterLastObs
 
   page= 1000;
 
@@ -164,7 +226,7 @@ export class HomeComponent implements OnInit, AfterViewInit{
         this.selected_meteors= this.meteors.slice(0,this.page)
         this.isLoading=false;
         let totalMeteors= this.meteors.length
-        this.lastNumberPage= parseInt(String(totalMeteors).slice(0, String(totalMeteors).length- 3))
+        this.lastNumberPage= parseInt(String(totalMeteors).slice(0, String(totalMeteors).length- 3))  
         this.backupLastNumberPage= parseInt(String(totalMeteors).slice(0, String(totalMeteors).length- 3))
         console.log("ending 1", this.meteors)
         localStorage.setItem("cacheMeteors", JSON.stringify(this.meteors))
@@ -261,10 +323,491 @@ export class HomeComponent implements OnInit, AfterViewInit{
   }
 
 
+  confirmFilter(parameter, workingMeteors= this.meteors){
+
+    this.resetCacheSortedFields()
+    this.filteringData= true
+
+    this.page=1000
+    
+    console.log("cofnirm filter", parameter)
+    let backupValueVelocity= this.valueVelocity
+    let backupHighValueVelocity= this.highValueVelocity
+    let backupValueDiameter= this.valueDiameter
+    let backupHighValueDiameter= this.highValueDiameter
+    let backupValueHazard= this.valueHazard
+    let backupHighValueHazard= this.highValueHazard
+    let backupValueMagnitude= this.valueMagnitude
+    let backupHighValueMagnitude= this.highValueMagnitude
+    let backupValueLastObs = this.valueLastObs
+    let backupHighValueLastObs= this.highValueLastObs
+    let backupValueRange= this.valueRange
+    let backupHighValueRange = this.highValueRange
+
+    if (parameter=="velocity"){
+      if (this.activeFilterVelocity){
+        console.log("since already active velocity, ")
+      this.resetFilter("velocity")
+    workingMeteors= this.meteors
+  this.valueVelocity=backupValueVelocity
+  this.highValueVelocity= backupHighValueVelocity
+  }
+
+
+      console.log("total of metoers velocity:", workingMeteors.length)
+        this.activeFilterVelocity= true
+        this.filteredMeteors= workingMeteors.filter(x=> parseFloat(x.v_inf)>=this.valueVelocity && parseFloat(x.v_inf)<=this.highValueVelocity)
+        workingMeteors= workingMeteors.filter(x=> parseFloat(x.v_inf)>=this.valueVelocity && parseFloat(x.v_inf)<=this.highValueVelocity)
+        console.log("filtered meteors velocity", this.filteredMeteors.length)
+        this.lastNumberPage= this.filteredMeteors.length<1000 ? 1 :  parseInt(String(this.filteredMeteors.length).slice(0, String(this.filteredMeteors.length).length- 3))
+        console.log("last number velocity ", this.lastNumberPage)
+        this.selected_meteors= this.filteredMeteors.slice(0,this.page)
+
+        this.buildGraphicVelocity(this.filteredMeteors, true);
+      this.buildGraphicDiameter(this.filteredMeteors, true);
+      this.buildGraphicHazard(this.filteredMeteors, true)
+      this.buildGraphicRange(this.filteredMeteors, true)
+
+      this.chartVelocity=this.buildChartVelocity()
+      this.chartDiameter= this.buildChartDiameter()
+      this.chartHazard= this.buildChartHazard()
+      this.chartRange= this.buildChartRange()
+      this.filteringVelocity= false
+
+      this.meteors= this.filteredMeteors
+      this.filteringData= false
+      return this.filteredMeteors
+
+}
+
+if (parameter=="diameter"){
+
+  if (this.activeFilterDiameter){
+    console.log("since already active diameter, ")
+  this.resetFilter("diameter")
+workingMeteors= this.meteors
+this.valueDiameter=backupValueDiameter
+this.highValueDiameter= backupHighValueDiameter
+}
+
+  console.log("total of metoers diameter:", this.meteors.length)
+  
+    this.activeFilterDiameter= true
+    this.filteredMeteors= workingMeteors.filter(x=> parseFloat(x.diameter)>=this.valueDiameter && parseFloat(x.diameter)<=this.highValueDiameter)
+    workingMeteors= workingMeteors.filter(x=> parseFloat(x.diameter)>=this.valueDiameter && parseFloat(x.diameter)<=this.highValueDiameter)
+    console.log("filtered meteors diameter", this.filteredMeteors.length)
+    this.lastNumberPage= this.filteredMeteors.length<1000 ? 1 : parseInt(String(this.filteredMeteors.length).slice(0, String(this.filteredMeteors.length).length- 3)) 
+    let provaultimo=  this.filteredMeteors.length<1000 ? 1 : parseInt(String(this.filteredMeteors.length).slice(0, String(this.filteredMeteors.length).length- 3)) 
+    console.log("last number diameter", provaultimo,String(this.filteredMeteors.length), String(this.filteredMeteors.length).length- 3 )
+    this.selected_meteors= this.filteredMeteors.slice(0,this.page)
+    console.log("after total of metoers: ", this.filteredMeteors.length)
+    this.buildGraphicVelocity(this.filteredMeteors, true);
+  this.buildGraphicDiameter(this.filteredMeteors, true);
+  this.buildGraphicHazard(this.filteredMeteors, true)
+  this.buildGraphicRange(this.filteredMeteors, true)
+
+  this.chartVelocity=this.buildChartVelocity()
+  this.chartDiameter= this.buildChartDiameter()
+  this.chartHazard= this.buildChartHazard()
+  this.chartRange= this.buildChartRange()
+  this.filteringDiameter= false
+  this.meteors= this.filteredMeteors
+  this.filteringData= false
+  return this.filteredMeteors
+
+}
+
+
+if (parameter=="hazard"){
+
+  if (this.activeFilterHazard){
+    console.log("since already active hazard, ")
+  this.resetFilter("hazard")
+workingMeteors= this.meteors
+this.valueHazard=backupValueHazard
+this.highValueHazard= backupHighValueHazard
+}
+
+  console.log("total of metoers hazard:", this.meteors.length)
+  
+    this.activeFilterHazard= true
+    this.filteredMeteors= workingMeteors.filter(x=> parseFloat(x.ps_max)>=this.valueHazard && parseFloat(x.ps_max)<=this.highValueHazard)
+    workingMeteors= workingMeteors.filter(x=> parseFloat(x.ps_max)>=this.valueHazard && parseFloat(x.ps_max)<=this.highValueHazard)
+    console.log("filtered meteors hazard", this.filteredMeteors.length)
+    this.lastNumberPage= this.filteredMeteors.length<1000 ? 1 : parseInt(String(this.filteredMeteors.length).slice(0, String(this.filteredMeteors.length).length- 3)) 
+    let provaultimo=  this.filteredMeteors.length<1000 ? 1 : parseInt(String(this.filteredMeteors.length).slice(0, String(this.filteredMeteors.length).length- 3)) 
+    console.log("last number hazard", provaultimo,String(this.filteredMeteors.length), String(this.filteredMeteors.length).length- 3 )
+    this.selected_meteors= this.filteredMeteors.slice(0,this.page)
+    console.log("after total of metoers: ", this.filteredMeteors.length)
+    this.buildGraphicVelocity(this.filteredMeteors, true);
+  this.buildGraphicDiameter(this.filteredMeteors, true);
+  this.buildGraphicHazard(this.filteredMeteors, true)
+  this.buildGraphicRange(this.filteredMeteors, true)
+
+  this.chartVelocity=this.buildChartVelocity()
+  this.chartDiameter= this.buildChartDiameter()
+  this.chartHazard= this.buildChartHazard()
+  this.chartRange= this.buildChartRange()
+  this.filteringHazard= false
+  this.meteors= this.filteredMeteors
+  this.filteringData= false
+  return this.filteredMeteors
+
+}
+
+
+if (parameter=="magnitude"){
+
+  if (this.activeFilterMagnitude){
+    console.log("since already active magnitude, ")
+  this.resetFilter("magnitude")
+workingMeteors= this.meteors
+this.valueMagnitude=backupValueMagnitude
+this.highValueMagnitude= backupHighValueMagnitude
+}
+
+  console.log("total of metoers magnitude:", this.meteors.length)
+  
+    this.activeFilterMagnitude= true
+    this.filteredMeteors= workingMeteors.filter(x=> parseFloat(x.h)>=this.valueMagnitude && parseFloat(x.h)<=this.highValueMagnitude)
+    workingMeteors= workingMeteors.filter(x=> parseFloat(x.h)>=this.valueMagnitude && parseFloat(x.h)<=this.highValueMagnitude)
+    console.log("filtered meteors magnitde", this.filteredMeteors.length)
+    this.lastNumberPage= this.filteredMeteors.length<1000 ? 1 : parseInt(String(this.filteredMeteors.length).slice(0, String(this.filteredMeteors.length).length- 3)) 
+    let provaultimo=  this.filteredMeteors.length<1000 ? 1 : parseInt(String(this.filteredMeteors.length).slice(0, String(this.filteredMeteors.length).length- 3)) 
+    console.log("last number magnitude", provaultimo,String(this.filteredMeteors.length), String(this.filteredMeteors.length).length- 3 )
+    this.selected_meteors= this.filteredMeteors.slice(0,this.page)
+    console.log("after magnitud efilters total of metoers: ", this.filteredMeteors.length)
+    this.buildGraphicVelocity(this.filteredMeteors, true);
+  this.buildGraphicDiameter(this.filteredMeteors, true);
+  this.buildGraphicHazard(this.filteredMeteors, true)
+  this.buildGraphicRange(this.filteredMeteors, true)
+
+  this.chartVelocity=this.buildChartVelocity()
+  this.chartDiameter= this.buildChartDiameter()
+  this.chartHazard= this.buildChartHazard()
+  this.chartRange= this.buildChartRange()
+  this.filteringMagnitude= false
+  this.meteors= this.filteredMeteors
+  this.filteringData= false
+  return this.filteredMeteors
+
+}
+
+if (parameter=="last_obs"){
+
+  if (this.activeFilterMagnitude){
+    console.log("since already active lastobs, ")
+  this.resetFilter("last_obs")
+workingMeteors= this.meteors
+this.valueLastObs=backupValueLastObs
+this.highValueLastObs= backupHighValueLastObs
+}
+
+  console.log("total of metoers lastobs:", this.meteors.length)
+  
+    this.activeFilterLastObs= true
+    // console.log("sorteddd", workingMeteors[0].last_obs, this.highValueLastObs)
+    this.filteredMeteors= workingMeteors.filter(x=> parseFloat(String(x.last_obs).split("-")[0])>=this.valueLastObs && parseFloat(String(x.last_obs).split("-")[0])<=this.highValueLastObs)
+    workingMeteors= workingMeteors.filter(x=> parseFloat(String(x.last_obs).split("-")[0])>=this.valueLastObs && parseFloat(String(x.last_obs).split("-")[0])<=this.highValueLastObs)
+    console.log("filtered meteors last obs", this.filteredMeteors.length)
+    this.lastNumberPage= this.filteredMeteors.length<1000 ? 1 : parseInt(String(this.filteredMeteors.length).slice(0, String(this.filteredMeteors.length).length- 3)) 
+    let provaultimo=  this.filteredMeteors.length<1000 ? 1 : parseInt(String(this.filteredMeteors.length).slice(0, String(this.filteredMeteors.length).length- 3)) 
+    console.log("last number last obs", provaultimo,String(this.filteredMeteors.length), String(this.filteredMeteors.length).length- 3 )
+    this.selected_meteors= this.filteredMeteors.slice(0,this.page)
+    console.log("after lastobs efilters total of metoers: ", this.filteredMeteors.length)
+    this.buildGraphicVelocity(this.filteredMeteors, true);
+  this.buildGraphicDiameter(this.filteredMeteors, true);
+  this.buildGraphicHazard(this.filteredMeteors, true)
+  this.buildGraphicRange(this.filteredMeteors, true)
+
+  this.chartVelocity=this.buildChartVelocity()
+  this.chartDiameter= this.buildChartDiameter()
+  this.chartHazard= this.buildChartHazard()
+  this.chartRange= this.buildChartRange()
+  this.filteringLastObs= false
+  this.meteors= this.filteredMeteors
+  this.filteringData= false
+  return this.filteredMeteors
+
+}
+
+
+
+if (parameter=="range"){
+
+  if (this.activeFilterRange){
+    console.log("since already active range, ")
+  this.resetFilter("range")
+workingMeteors= this.meteors
+this.valueRange=backupValueRange
+this.highValueRange= backupHighValueRange
+}
+
+  console.log("total of metoers range:", this.meteors.length)
+  
+    this.activeFilterRange= true
+    // console.log("FILTRO RANGE: ", workingMeteors[0].range)
+    this.filteredMeteors= workingMeteors.filter(x=> (parseFloat(x.range.split("-")[1])>=this.valueRange && parseFloat(x.range.split("-")[1])<=this.highValueRange) || (parseFloat(x.range.split("-")[0])>=this.valueRange && parseFloat(x.range.split("-")[0])<=this.highValueRange))
+    workingMeteors= workingMeteors.filter(x=> (parseFloat(x.range.split("-")[1])>=this.valueRange && parseFloat(x.range.split("-")[1])<=this.highValueRange) || (parseFloat(x.range.split("-")[0])>=this.valueRange && parseFloat(x.range.split("-")[0])<=this.highValueRange))
+    console.log("filtered meteors range", this.filteredMeteors.length)
+    this.lastNumberPage= this.filteredMeteors.length<1000 ? 1 : parseInt(String(this.filteredMeteors.length).slice(0, String(this.filteredMeteors.length).length- 3)) 
+    let provaultimo=  this.filteredMeteors.length<1000 ? 1 : parseInt(String(this.filteredMeteors.length).slice(0, String(this.filteredMeteors.length).length- 3)) 
+    console.log("last number range", provaultimo,String(this.filteredMeteors.length), String(this.filteredMeteors.length).length- 3 )
+    this.selected_meteors= this.filteredMeteors.slice(0,this.page)
+    console.log("after range efilters total of metoers: ", this.filteredMeteors.length)
+    this.buildGraphicVelocity(this.filteredMeteors, true);
+  this.buildGraphicDiameter(this.filteredMeteors, true);
+  this.buildGraphicHazard(this.filteredMeteors, true)
+  this.buildGraphicRange(this.filteredMeteors, true)
+
+  this.chartVelocity=this.buildChartVelocity()
+  this.chartDiameter= this.buildChartDiameter()
+  this.chartHazard= this.buildChartHazard()
+  this.chartRange= this.buildChartRange()
+  this.filteringRange= false
+  this.meteors= this.filteredMeteors
+  this.filteringData= false
+  return this.filteredMeteors
+
+}
 
 
 
 
+
+
+this.filteringData= false
+this.meteors= this.filteredMeteors
+return this.filteredMeteors
+
+
+
+  }
+
+
+
+
+
+
+
+  resetFilter(parameter){
+
+
+    console.log("reset filter ", parameter)
+    
+    this.disableFilter(parameter)
+    
+    let initialMeteors= this.backupMeteors
+    //da qui inizia filtro per parametri: velocity, hazard etc
+    console.log("total meteors before reset filter", initialMeteors.length)
+    if (this.activeFilterVelocity){
+      initialMeteors= this.confirmFilter("velocity", initialMeteors)
+    }
+
+    console.log("total meteors after velocityfilter", initialMeteors.length)
+
+    if (this.activeFilterDiameter){
+      initialMeteors= this.confirmFilter("diameter", initialMeteors)
+    }
+
+    console.log("total meteors after diameter filter", initialMeteors.length)
+
+    if (this.activeFilterHazard){
+      initialMeteors= this.confirmFilter("hazard", initialMeteors)
+    }
+
+    console.log("total meteors after hazard filter", initialMeteors.length)
+
+    if (this.activeFilterMagnitude){
+      initialMeteors= this.confirmFilter("magnitude", initialMeteors)
+    }
+
+    if (this.activeFilterLastObs){
+      initialMeteors= this.confirmFilter("last_obs", initialMeteors)
+    }
+
+    if (this.activeFilterRange){
+      initialMeteors= this.confirmFilter("range", initialMeteors)
+    }
+
+    console.log("total meteors after magnitude filter", initialMeteors.length)
+
+
+//da qui finsice filtro per parametri
+
+
+
+
+
+    //da qui inizia filtro cneos, nasa, gmn
+
+    if (this.atLeastOneFilterActive){
+     
+        
+  
+    console.log("clicked on ", this.lastFilterActive, initialMeteors.length)
+      initialMeteors  = initialMeteors.filter(x=> x["author"]==this.lastFilterActive)
+      
+      // this.lastNumberPage= initialMeteors.length<1000? 1: parseInt(String(this.meteors.length).slice(0, String(this.meteors.length).length- 3))
+      // this.selected_meteors= this.meteors.slice(0,this.page)
+  
+   
+  
+     
+    }
+
+
+    //qui finisce filtro
+
+    console.log("total meteors after rest filter", initialMeteors.length)
+    this.meteors= initialMeteors
+    this.selected_meteors= this.meteors.slice(0,this.page)
+    this.lastNumberPage= this.meteors.length<1000 ? 1 : parseInt(String(this.meteors.length).slice(0, String(this.meteors.length).length- 3))
+
+    this.buildGraphicVelocity(initialMeteors, true);
+    this.buildGraphicDiameter(initialMeteors, true);
+    this.buildGraphicHazard(initialMeteors, true)
+    this.buildGraphicRange(initialMeteors, true)
+
+    this.chartVelocity=this.buildChartVelocity()
+    this.chartDiameter= this.buildChartDiameter()
+    this.chartHazard= this.buildChartHazard()
+    this.chartRange= this.buildChartRange()
+
+
+
+
+   
+  }
+
+
+  undoFiltering(parameter){
+    if (parameter=="velocity"){
+      console.log("disabilitato filtro velocity")
+      this.filteringVelocity= false
+      this.valueVelocity=0
+      this.highValueVelocity= 42
+    }
+    if (parameter=="diameter"){
+      this.filteringDiameter= false
+      this.valueDiameter= 0
+      this.highValueDiameter=7
+    }
+    if (parameter=="hazard"){
+      this.filteringHazard= false
+      this.valueHazard= -12
+      this.highValueHazard= -2
+    }
+    if (parameter=="range"){
+      this.filteringRange= false
+      this.valueRange= 2024
+      this.highValueRange= 2880
+    }
+    if (parameter=="magnitude"){
+      this.filteringMagnitude= false
+      this.valueMagnitude= 0
+      this.highValueMagnitude
+    }
+    if (parameter=="last_obs"){
+      this.filteringLastObs= false
+      this.valueLastObs= 1979
+      this.highValueLastObs= 2024
+    }
+  }
+
+  disableFilter(parameter){
+    if (parameter=="velocity"){
+      console.log("disabilitato filtro velocity")
+      this.activeFilterVelocity= false
+      this.valueVelocity=0
+      this.highValueVelocity= 42
+    }
+    if (parameter=="diameter"){
+      this.activeFilterDiameter= false
+      this.valueDiameter= 0
+      this.highValueDiameter=7
+    }
+    if (parameter=="hazard"){
+      this.activeFilterHazard= false
+      this.valueHazard= -12
+      this.highValueHazard=-2
+    }
+    if (parameter=="range"){
+      this.activeFilterRange= false
+      this.valueRange= 2024
+      this.highValueRange= 2880
+    }
+    if (parameter=="magnitude"){
+      this.activeFilterMagnitude= false
+      this.valueMagnitude= 13
+      this.highValueMagnitude= 33
+    }
+    if (parameter=="last_obs"){
+      this.activeFilterLastObs= false
+      this.valueLastObs= 1979
+      this.highValueLastObs= 2024
+    }
+  }
+
+
+showFilterSlider(parameter){
+  if (parameter=="velocity"){
+    this.filteringVelocity= true
+    this.filteringDiameter=false
+    this.filteringHazard= false
+    this.filteringLastObs= false
+    this.filteringMagnitude= false
+    this.filteringRange= false
+  }
+  if (parameter=="diameter"){
+    this.filteringVelocity= false
+    this.filteringDiameter=true
+    this.filteringHazard= false
+    this.filteringLastObs= false
+    this.filteringMagnitude= false
+    this.filteringRange= false
+  }
+  if (parameter=="hazard"){
+    this.filteringVelocity= false
+    this.filteringDiameter=false
+    this.filteringHazard= true
+    this.filteringLastObs= false
+    this.filteringMagnitude= false
+    this.filteringRange= false
+  }
+  if (parameter=="magnitude"){
+    this.filteringVelocity= false
+    this.filteringDiameter=false
+    this.filteringHazard= false
+    this.filteringLastObs= false
+    this.filteringMagnitude= true
+    this.filteringRange= false
+  }
+  if (parameter=="last_obs"){
+    this.filteringVelocity= false
+    this.filteringDiameter=false
+    this.filteringHazard= false
+    this.filteringLastObs= true
+    this.filteringMagnitude= false
+    this.filteringRange= false
+  }
+  if (parameter=="range"){
+    this.filteringVelocity= false
+    this.filteringDiameter=false
+    this.filteringHazard= false
+    this.filteringLastObs= false
+    this.filteringMagnitude= false
+    this.filteringRange= true
+  }
+}
+
+
+minimumMax(){
+  console.log("begin minimum macx", this.valueVelocity, this.highValueVelocity)
+  // if (this.valueVelocity>this.highValueVelocity){
+  //   this.valueVelocity=this.highValueVelocity
+  // }
+}
 
 
 
@@ -307,7 +850,7 @@ export class HomeComponent implements OnInit, AfterViewInit{
       }
 
 
-
+      if (!this.meteors){window.location.reload()}
       this.meteors= this.meteors.concat(this.meteors2)
       this.backupMeteors= this.meteors
 
@@ -315,6 +858,7 @@ export class HomeComponent implements OnInit, AfterViewInit{
       console.log("TOALE 2,", totalMeteors)
       this.lastNumberPage= parseInt(String(totalMeteors).slice(0, String(totalMeteors).length- 3))
       this.backupLastNumberPage= parseInt(String(totalMeteors).slice(0, String(totalMeteors).length- 3))
+      console.log("last page ", this.lastNumberPage, totalMeteors)
       localStorage.setItem("cacheGraph", "true");
       this.fetchSecondPart= true
       // localStorage.setItem("cacheMeteors", JSON.stringify(this.meteors))
@@ -338,66 +882,98 @@ export class HomeComponent implements OnInit, AfterViewInit{
 
   provaAccordion(meteor){
     this.tuttidettaglimeteora=true
+    meteor["listedIn"] = meteor["author"];
+     
     this.meteoradamostraredettagli=meteor
     console.log("ok tutti dettagli")
   
   }
   
+
+  //utilize fot CNEOS, GMN, NASSA
  filterMeteors(id){
+  this.resetCacheSortedFields()
+  this.filteringData= true
   this.page=1000
   if (this.atLeastOneFilterActive){
     if(this.lastFilterActive==id){
-      console.log("same active ", this.backupMeteors.length)
-      this.meteors= this.backupMeteors
-      this.lastNumberPage= this.backupLastNumberPage
-      console.log("last number ",this.lastNumberPage)
-      this.selected_meteors= this.meteors.slice(0,this.page)
+
+      //ultime aggiunte
+      this.atLeastOneFilterActive= false
+      this.lastFilterActive= undefined
       this.CNEOSFilterActive= false;
     this.GMNFilterActive= false;
     this.NASAFilterActive= false;
-    this.atLeastOneFilterActive=false
 
-    // RESET GRAPH WITH DATE IN CACHE
-    this.setInitialValues(JSON.parse(localStorage.getItem("cacheVelocity")), 
-      JSON.parse(localStorage.getItem("cacheDiameter")),
-      JSON.parse(localStorage.getItem("cacheHazard")),
-      JSON.parse(localStorage.getItem("cacheRange")))
-
-      this.chartVelocity=this.buildChartVelocity()
-      this.chartDiameter= this.buildChartDiameter()
-      this.chartHazard= this.buildChartHazard()
-      this.chartRange= this.buildChartRange()
-
+    this.resetFilter(id)
+    this.filteringData= false
     return
+      
+
+      //ultimeaggiutne fine
+
+
+
+    //   console.log("same active ", this.backupMeteors.length)
+    //   this.meteors= this.backupMeteors
+    //   this.lastNumberPage= this.backupLastNumberPage
+    //   console.log("last number ",this.lastNumberPage)
+    //   this.selected_meteors= this.meteors.slice(0,this.page)
+    //   this.CNEOSFilterActive= false;
+    // this.GMNFilterActive= false;
+    // this.NASAFilterActive= false;
+    // this.atLeastOneFilterActive=false
+
+    // // RESET GRAPH WITH DATE IN CACHE
+    // this.setInitialValues(JSON.parse(localStorage.getItem("cacheVelocity")), 
+    //   JSON.parse(localStorage.getItem("cacheDiameter")),
+    //   JSON.parse(localStorage.getItem("cacheHazard")),
+    //   JSON.parse(localStorage.getItem("cacheRange")))
+
+    //   this.chartVelocity=this.buildChartVelocity()
+    //   this.chartDiameter= this.buildChartDiameter()
+    //   this.chartHazard= this.buildChartHazard()
+    //   this.chartRange= this.buildChartRange()
+
+    
     }
     this.CNEOSFilterActive= false;
     this.GMNFilterActive= false;
     this.NASAFilterActive= false;
-    this.meteors= this.backupMeteors
-    this.lastNumberPage= this.backupLastNumberPage
-    console.log("last number ",this.lastNumberPage)
-    this.selected_meteors= this.meteors.slice(0,this.page)
+    this.atLeastOneFilterActive= false;
+    this.lastFilterActive= undefined
+
+    this.resetFilter(id)
+
+  
+    // this.meteors= this.backupMeteors
+    // this.lastNumberPage= this.backupLastNumberPage
+    // console.log("last number ",this.lastNumberPage)
+    // this.selected_meteors= this.meteors.slice(0,this.page)
   }
   this.atLeastOneFilterActive= true
   this.lastFilterActive= id
-  console.log("clicked on ", id, this.meteors.length)
-    this.meteors  = this.meteors.filter(x=> x["author"]==id)
-    this.backupLastNumberPage= this.lastNumberPage
-    this.lastNumberPage= parseInt(String(this.meteors.length).slice(0, String(this.meteors.length).length- 3))
-    this.selected_meteors= this.meteors.slice(0,this.page)
 
-    console.log("build graphics", this.meteors.length)
+  this.resetFilter(id)
+  // console.log("clicked on ", id, this.meteors.length)
+  //   this.meteors  = this.meteors.filter(x=> x["author"]==id)
+  //   this.backupLastNumberPage= this.lastNumberPage
+  //   this.lastNumberPage= parseInt(String(this.meteors.length).slice(0, String(this.meteors.length).length- 3))
+  //   this.selected_meteors= this.meteors.slice(0,this.page)
 
-    this.buildGraphicDiameter(this.meteors, true)
-    this.buildGraphicHazard(this.meteors, true)
-    this.buildGraphicVelocity(this.meteors, true)
-    this.buildGraphicRange(this.meteors, true)
-    this.chartVelocity=this.buildChartVelocity()
-      this.chartDiameter= this.buildChartDiameter()
-      this.chartHazard= this.buildChartHazard()
-      this.chartRange= this.buildChartRange()
+  //   console.log("build graphics", this.meteors.length)
+
+  //   this.buildGraphicDiameter(this.meteors, true)
+  //   this.buildGraphicHazard(this.meteors, true)
+  //   this.buildGraphicVelocity(this.meteors, true)
+  //   this.buildGraphicRange(this.meteors, true)
+  //   this.chartVelocity=this.buildChartVelocity()
+  //     this.chartDiameter= this.buildChartDiameter()
+  //     this.chartHazard= this.buildChartHazard()
+  //     this.chartRange= this.buildChartRange()
 
     console.log("after selection ", this.meteors.length)
+    this.filteringData= false
     if (id=="CNEOS") {this.CNEOSFilterActive=true; console.log("active cneos filter ", this.CNEOSFilterActive)}
     else if(id=="NASA"){this.NASAFilterActive= true; console.log("active NASA filter", this.NASAFilterActive)}
     else if (id=="GMN"){this.GMNFilterActive= true}
@@ -434,9 +1010,13 @@ export class HomeComponent implements OnInit, AfterViewInit{
     // let firstDigits = parseInt(String(totalMeteors).slice(0, String(totalMeteors).length- 3))
 
     let firstDigits= this.lastNumberPage
+
+    console.log("firstdigi", firstDigits, "lastNumberPage", this.lastNumberPage, this.meteors.length)
     this.selected_meteors= [...this.meteors.slice(firstDigits*1000+1)]
 
+
     this.page= firstDigits*1000
+    console.log("page", this.page)
     console.log("lunghezze", this.meteors.length, firstDigits*1000+1, this.page, this.lastNumberPage)
 
   }
@@ -678,6 +1258,7 @@ switchLoading(){
 
 
   buildGraphicVelocity(meteors, resetValues=false){
+   
     if (resetValues){
     this.velocityLess5=0
     this.velocityLess10=0
@@ -1138,7 +1719,12 @@ setInitialValues(cacheVelocity, cacheDiameter, cacheHazard, cacheRange){
 
 
 
+resetCacheSortedFields(){
+  this.fields= {"diameter": "none", "v_inf": "none", "ps_max": "none", "n_imp": "none", "range": "none", "last_obs": "none", "h": "none" }
+  
+  this.sortedFields={"diameter": {"asc": [], "desc": []}, "v_inf": {"asc": [], "desc": []}, "ps_max": {"asc": [], "desc": []}, "n_imp": {"asc": [], "desc": []}, "range": {"asc":[], "desc": []}, "last_obs": {"asc":[], "desc":[]}, "h": {"asc": [], "desc":[]}}
 
+}
 
 
 

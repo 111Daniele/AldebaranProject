@@ -3,6 +3,8 @@
   
 <div *ngIf="isLoading && !errorFetch" class="loader"> </div>
 
+<div *ngIf="filteringData" class="loader"> </div>
+
 <div *ngIf="errorFetch" class="errorFetch"> <p> SERVER ERROR: An Error has occured when fetch meteors. Try Again <button class="refresh" (click)="refresh()">REFRESH</button> </p></div>
 
 <div *ngIf="errorLogin" class="overlay"> <p style="color:red; padding-left:30%; padding-top: 20%"> ERROR LOGIN <button style="margin-right: 20%; "   class="refresh" (click)="close()">CLOSE</button> </p></div>
@@ -14,17 +16,29 @@
 <div class="buttons_container" style="padding-top: 90px"> 
 
   <div style="display: flex; align-items:center"> 
-<button class="filter_button" (click)="sortMeteors('v_inf')"> Velocity {{fields["v_inf"]== "none" ? "" : fields["v_inf"]== "asc" ? "↓" : "↑"}} </button>
+<button class="filter_button" style="margin-right:0" (click)="sortMeteors('v_inf')"> Velocity {{fields["v_inf"]== "none" ? "" : fields["v_inf"]== "asc" ? "↓" : "↑"}} </button>
 
-<button class="filter_button" (click)="sortMeteors('diameter')"> Diameter {{fields["diameter"]== "none" ? "" : fields["diameter"]== "asc" ? "↓" : "↑"}} </button>
+<button (click)="showFilterSlider('velocity')" style="margin-left:0; height:53px; cursor: pointer;margin-right:10px">⋮</button>
 
-<button class="filter_button" (click)="sortMeteors('ps_max')"> Hazard {{fields["ps_max"]== "none" ? "" : fields["ps_max"]== "asc" ? "↓" : "↑"}} </button>
+<button class="filter_button" style="margin-right:0" (click)="sortMeteors('diameter')"> Diameter {{fields["diameter"]== "none" ? "" : fields["diameter"]== "asc" ? "↓" : "↑"}} </button>
 
-<button class="filter_button" (click)="sortMeteors('h')"> Magnitude {{fields["h"]== "none" ? "" : fields["h"]== "asc" ? "↓" : "↑"}} </button>
+<button (click)="showFilterSlider('diameter')" style="margin-left:0; height:53px; cursor: pointer;margin-right:10px">⋮</button>
 
-<button class="filter_button" (click)="sortMeteors('last_obs')"> Last Obs{{fields["last_obs"]== "none" ? "" : fields["last_obs"]== "asc" ? "↓" : "↑"}} </button>
+<button class="filter_button" style="margin-right:0" (click)="sortMeteors('ps_max')"> Hazard {{fields["ps_max"]== "none" ? "" : fields["ps_max"]== "asc" ? "↓" : "↑"}} </button>
 
-<button class="filter_button" (click)="sortMeteors('range')"> Range {{fields["range"]== "none" ? "" : fields["range"]== "asc" ? "↓" : "↑"}} </button>
+<button (click)="showFilterSlider('hazard')" style="margin-left:0; height:53px; cursor: pointer;margin-right:10px">⋮</button>
+
+<button class="filter_button" style="margin-right:0" (click)="sortMeteors('h')"> Magnitude {{fields["h"]== "none" ? "" : fields["h"]== "asc" ? "↓" : "↑"}} </button>
+
+<button (click)="showFilterSlider('magnitude')" style="margin-left:0; height:53px; cursor: pointer;margin-right:10px">⋮</button>
+
+<button class="filter_button" style="margin-right:0" (click)="sortMeteors('last_obs')"> Last Obs{{fields["last_obs"]== "none" ? "" : fields["last_obs"]== "asc" ? "↓" : "↑"}} </button>
+
+<button (click)="showFilterSlider('last_obs')" style="margin-left:0; height:53px; cursor: pointer;margin-right:10px">⋮</button>
+
+<button class="filter_button" style="margin-right:0" (click)="sortMeteors('range')"> Range {{fields["range"]== "none" ? "" : fields["range"]== "asc" ? "↓" : "↑"}} </button>
+
+<button (click)="showFilterSlider('range')" style="margin-left:0; height:53px; cursor: pointer;margin-right:10px">⋮</button>
 
 <div style="display: inline; font-size:40px; color:white; margin-left:40px; background-color: black; height: 40px; padding-top:25px; padding-left:10px; padding-right:10px; border-radius:10px"> FILTER FOR: </div>
 
@@ -35,6 +49,49 @@
 <button class="filter_button" (click)="filterMeteors('NASA')" [ngClass]="{'activeFilter': this.NASAFilterActive}"> NASA  </button>
 
 </div>
+
+<div *ngIf="filteringVelocity" class="slider"> 
+  <div style="display: inline"> Velocity (km/s)</div>
+  <button (click)="undoFiltering('velocity')" style="display:inline-block; margin-left:90%; background-color:red; cursor:pointer;color:white">    X   </button>
+<ngx-slider [(value)]="valueVelocity" [(highValue)]="highValueVelocity"  (valueChange)="minimumMax()" [options]="optionsVelocity"> Velocity</ngx-slider>
+<button (click)= "confirmFilter('velocity')" style="background-color: green; color: white; cursor:pointer"> FILTER</button>
+</div>
+
+<div *ngIf="filteringDiameter" class="slider"> 
+  <div style="display: inline"> Diameter (km)</div>
+  <button (click)="undoFiltering('diameter')" style="display:inline-block; margin-left:90%; background-color:red; cursor:pointer;color:white">    X   </button>
+  <ngx-slider [(value)]="valueDiameter" [(highValue)]="highValueDiameter"   [options]="optionsDiameter"> Diameter</ngx-slider>
+  <button (click)= "confirmFilter('diameter')" style="background-color: green; color: white; cursor:pointer"> FILTER</button>
+  </div>
+
+  <div *ngIf="filteringHazard" class="slider"> 
+    <div style="display: inline"> Hazard (h)</div>
+    <button (click)="undoFiltering('hazard')" style="display:inline-block; margin-left:90%; background-color:red; cursor:pointer;color:white">    X   </button>
+    <ngx-slider [(value)]="valueHazard" [(highValue)]="highValueHazard"   [options]="optionsHazard"> Hazard</ngx-slider>
+    <button (click)= "confirmFilter('hazard')" style="background-color: green; color: white; cursor:pointer"> FILTER</button>
+    </div>
+
+    <div *ngIf="filteringMagnitude" class="slider"> 
+      <div style="display: inline"> Magnitude (M)</div>
+      <button (click)="undoFiltering('magnitude')" style="display:inline-block; margin-left:90%; background-color:red; cursor:pointer;color:white">    X   </button>
+      <ngx-slider [(value)]="valueMagnitude" [(highValue)]="highValueMagnitude"   [options]="optionsMagnitude"> Magnitude</ngx-slider>
+      <button (click)= "confirmFilter('magnitude')" style="background-color: green; color: white; cursor:pointer"> FILTER</button>
+      </div>
+
+      <div *ngIf="filteringLastObs" class="slider"> 
+        <div style="display: inline"> Last Obs</div>
+        <button (click)="undoFiltering('last_obs')" style="display:inline-block; margin-left:90%; background-color:red; cursor:pointer;color:white">    X   </button>
+        <ngx-slider [(value)]="valueLastObs" [(highValue)]="highValueLastObs"   [options]="optionsLastObs"> Last Observation</ngx-slider>
+        <button (click)= "confirmFilter('last_obs')" style="background-color: green; color: white; cursor:pointer"> FILTER</button>
+        </div>
+   
+        <div *ngIf="filteringRange" class="slider"> 
+          <div style="display: inline"> Range</div>
+          <button (click)="undoFiltering('range')" style="display:inline-block; margin-left:90%; background-color:red; cursor:pointer;color:white">    X   </button>
+          <ngx-slider [(value)]="valueRange" [(highValue)]="highValueRange"   [options]="optionsRange"> Range</ngx-slider>
+          <button (click)= "confirmFilter('range')" style="background-color: green; color: white; cursor:pointer"> FILTER</button>
+          </div>
+
 
 <!-- <button class="filter_button" (click)="switchLoading()">  LOAD</button> -->
 
@@ -54,8 +111,52 @@
 
 <div *ngIf="page!=lastNumberPage*1000" (click)="lastPage()"> <button class="paginate_button"> LAST  </button></div>
 
+
+
+<div style="display: inline; position: absolute; right:200px; display: flex; justify-content: space-evenly;">
+
+  <div *ngIf="activeFilterVelocity" style="background-color: rgb(142, 228, 142); padding:10px"> 
+    <button (click)="resetFilter('velocity')" style="background-color: red; color: white"> X</button>
+    <div> Velocity(km/s): {{valueVelocity}} - {{highValueVelocity}} </div>
+  </div>
+
+
+  <div *ngIf="activeFilterDiameter" style="background-color: rgb(142, 228, 142); padding:10px; margin-left:20px" > 
+    <button (click)="resetFilter('diameter')" style="background-color: red; color: white"> X</button>
+    <div> Diameter(km): {{valueDiameter}} - {{highValueDiameter}} </div>
+  </div>
+
+  <div *ngIf="activeFilterHazard" style="background-color: rgb(142, 228, 142); padding:10px; margin-left:20px" > 
+    <button (click)="resetFilter('hazard')" style="background-color: red; color: white"> X</button>
+    <div> Hazard(h): {{valueHazard}} - {{highValueHazard}} </div>
+  </div>
+
+  <div *ngIf="activeFilterMagnitude" style="background-color: rgb(142, 228, 142); padding:10px; margin-left:20px" > 
+    <button (click)="resetFilter('magnitude')" style="background-color: red; color: white"> X</button>
+    <div> Magnitude(M): {{valueMagnitude}} - {{highValueMagnitude}} </div>
+  </div>
+
+  <div *ngIf="activeFilterLastObs" style="background-color: rgb(142, 228, 142); padding:10px; margin-left:20px" > 
+    <button (click)="resetFilter('last_obs')" style="background-color: red; color: white"> X</button>
+    <div> Last Observation: {{valueLastObs}} - {{highValueLastObs}} </div>
+  </div>
+
+  <div *ngIf="activeFilterRange" style="background-color: rgb(142, 228, 142); padding:10px; margin-left:20px" > 
+    <button (click)="resetFilter('range')" style="background-color: red; color: white"> X</button>
+    <div> Range: {{valueRange}} - {{highValueRange}} </div>
+  </div>
+
+</div>
+
+
+
 </div>
 <!-- PAGINATE DIV -->
+
+
+
+
+
 </div>
 <!-- MASTER CONTAINER DIV -->
 
@@ -66,7 +167,7 @@
 
 
 <!--GRAPHICS-->
-<div class="charts"> 
+<div class="charts" *ngIf="!filteringData"> 
 
 <div class="pie" [chart]="chartVelocity"> 
 
@@ -113,7 +214,7 @@ backdrop-filter: blur(2px);">
 <button class="close" style="width:50px; margin-top:10px; margin-right:10px" (click)="closeDettagliMeteora()">  X </button>
                              <div style=" border-radius:10px; "> <p style="font-size:20px; font-weight: bold;"> FULL DETAILS METEOR </p>
                                           <div *ngFor="let p of meteoradamostraredettagli|keyvalue" style="margin-bottom: 5px; font-size:20px"> 
-                                                    {{p.key}}: {{p.value}}
+                                                 <div *ngIf="p.key!='author'">  {{p.key}}: {{p.value}} </div> 
                                           </div>
                               </div>
  </div>

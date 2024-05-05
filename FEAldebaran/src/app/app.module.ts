@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { ChartModule} from 'angular-highcharts';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -54,7 +55,8 @@ import { AdminComponent } from './admin/admin.component';
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    NgxSliderModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS , useClass: AuthInterceptorService, multi: true}],
   bootstrap: [AppComponent]

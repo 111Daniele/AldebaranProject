@@ -209,7 +209,7 @@ for (let met1 of meteorNASA){
 console.log("not velocity ", countt, meteorNASA.slice(1,30))
 
 
-let meteorsWithDuplicate= meteors.concat(meteorNASA).concat(meteorGBM)
+let meteorsWithDuplicate= meteors.concat(meteorNASA).concat(meteorGBM.slice(0, 40500))
 
 res.status(200).json({status:"success", data: meteorsWithDuplicate})
 
