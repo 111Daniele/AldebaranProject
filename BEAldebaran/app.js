@@ -20,10 +20,10 @@ const app= exp();
 
  
 
-// app.use(cors({origin: 'https://aldebaranprojectfe.onrender.com'}));
+app.use(cors({origin: 'https://aldebaranprojectfe.onrender.com'}));
 
 
-app.use(cors({origin: 'http://localhost:4200'}));
+//app.use(cors({origin: 'http://localhost:4200'}));
 
 //app.use(cors({origin: 'http://localhost:52423'}));
 
