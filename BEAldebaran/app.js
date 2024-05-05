@@ -25,6 +25,8 @@ const app= exp();
 
 app.use(cors({origin: 'http://localhost:4200'}));
 
+//app.use(cors({origin: 'http://localhost:52423'}));
+
 
 app.use(exp.urlencoded({extended: true}))
 
@@ -209,7 +211,7 @@ for (let met1 of meteorNASA){
 console.log("not velocity ", countt, meteorNASA.slice(1,30))
 
 
-let meteorsWithDuplicate= meteors.concat(meteorNASA).concat(meteorGBM.slice(0, 40500))
+let meteorsWithDuplicate= meteors.concat(meteorNASA).concat(meteorGBM)
 
 res.status(200).json({status:"success", data: meteorsWithDuplicate})
 

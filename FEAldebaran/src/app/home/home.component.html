@@ -117,33 +117,33 @@
 
   <div *ngIf="activeFilterVelocity" style="background-color: rgb(142, 228, 142); padding:10px"> 
     <button (click)="resetFilter('velocity')" style="background-color: red; color: white"> X</button>
-    <div> Velocity(km/s): {{valueVelocity}} - {{highValueVelocity}} </div>
+    <div> Velocity(km/s): {{fixedValueVelocity}} - {{fixedHighValueVelocity}} </div>
   </div>
 
 
   <div *ngIf="activeFilterDiameter" style="background-color: rgb(142, 228, 142); padding:10px; margin-left:20px" > 
     <button (click)="resetFilter('diameter')" style="background-color: red; color: white"> X</button>
-    <div> Diameter(km): {{valueDiameter}} - {{highValueDiameter}} </div>
+    <div> Diameter(km): {{fixedValueDiameter}} - {{fixedHighValueDiameter}} </div>
   </div>
 
   <div *ngIf="activeFilterHazard" style="background-color: rgb(142, 228, 142); padding:10px; margin-left:20px" > 
     <button (click)="resetFilter('hazard')" style="background-color: red; color: white"> X</button>
-    <div> Hazard(h): {{valueHazard}} - {{highValueHazard}} </div>
+    <div> Hazard(h): {{fixedValueHazard}} - {{fixedHighValueHazard}} </div>
   </div>
 
   <div *ngIf="activeFilterMagnitude" style="background-color: rgb(142, 228, 142); padding:10px; margin-left:20px" > 
     <button (click)="resetFilter('magnitude')" style="background-color: red; color: white"> X</button>
-    <div> Magnitude(M): {{valueMagnitude}} - {{highValueMagnitude}} </div>
+    <div> Magnitude(M): {{fixedValueMagnitude}} - {{fixedHighValueMagnitude}} </div>
   </div>
 
   <div *ngIf="activeFilterLastObs" style="background-color: rgb(142, 228, 142); padding:10px; margin-left:20px" > 
     <button (click)="resetFilter('last_obs')" style="background-color: red; color: white"> X</button>
-    <div> Last Observation: {{valueLastObs}} - {{highValueLastObs}} </div>
+    <div> Last Observation: {{fixedValueLastObs}} - {{fixedHighValueLastObs}} </div>
   </div>
 
   <div *ngIf="activeFilterRange" style="background-color: rgb(142, 228, 142); padding:10px; margin-left:20px" > 
     <button (click)="resetFilter('range')" style="background-color: red; color: white"> X</button>
-    <div> Range: {{valueRange}} - {{highValueRange}} </div>
+    <div> Range: {{fixedValueRange}} - {{fixedHighValueRange}} </div>
   </div>
 
 </div>
