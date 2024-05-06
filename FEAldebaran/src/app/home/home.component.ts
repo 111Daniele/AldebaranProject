@@ -1015,6 +1015,8 @@ minimumMax(){
 
     let cacheMeteorsD= localStorage.getItem("cacheMeteors")
 
+    // if(!cacheMeteorsD){window.location.reload()}
+
     if (true){
     let subscription2= this.meteorServices.getMeteors2().subscribe(
       {next: x=> {

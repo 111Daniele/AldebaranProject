@@ -16,7 +16,7 @@ exports.handleLogin = async (req, res, next)=>{
     console.log("body", req.body, "name, password", name, password)
     //Don't check if email and password exist, because are required in front-end
     const user= await User.findOne({name}).select("+password") //Use findOne instead find to avoid getting List User[]
-    if (!user) next(new CustomError("Username not exists!", 400))
+    if (!user) return next(new CustomError("Username not exists!", 400))
     const correct_password = await user.verifyPassword(password)
     if (!correct_password){
         let pass_error= new CustomError("Password incorrect!", 400)

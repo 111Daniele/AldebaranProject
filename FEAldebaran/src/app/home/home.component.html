@@ -7,7 +7,7 @@
 
 <div *ngIf="errorFetch" class="errorFetch"> <p> SERVER ERROR: An Error has occured when fetch meteors. Try Again <button class="refresh" (click)="refresh()">REFRESH</button> </p></div>
 
-<div *ngIf="errorLogin" class="overlay"> <p style="color:red; padding-left:30%; padding-top: 20%"> ERROR LOGIN <button style="margin-right: 20%; "   class="refresh" (click)="close()">CLOSE</button> </p></div>
+<div *ngIf="errorLogin" class="overlay"> <div style="color:red; padding-left:30%; padding-top: 10%; color: red; width: 500px; height: 500px; font-size:70px; line-height: 60px; font-weight: bold"> ERROR LOGIN: User with this username and password does not exist! Please, do Signup first <button style="margin-right: 20%; "   class="refresh" (click)="close()">CLOSE</button> </div></div>
 
 <div *ngIf="!fetchSecondPart" style="height:90px">  </div>
 

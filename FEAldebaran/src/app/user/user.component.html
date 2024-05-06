@@ -261,7 +261,7 @@
 
     <div class="panel" style="">
       <div class="dettagliMeteora"> 
-        <div *ngFor="let p of meteor|keyvalue" style="margin-bottom: 5px"> {{p.key}} {{p.value}}</div>
+      <div *ngFor="let p of meteor|keyvalue" style="margin-bottom: 5px">  <div *ngIf="p.key!='author'"> {{p.key}} {{p.value}}</div> </div> 
       </div>
     </div>
 
@@ -289,7 +289,7 @@
 
     <div class="panel" style="">
       <div class="dettagliMeteora"> 
-        <div *ngFor="let p of meteor|keyvalue" style="margin-bottom: 5px"> {{p.key}} {{p.value}}</div>
+        <div *ngFor="let p of meteor|keyvalue" style="margin-bottom: 5px">  <div *ngIf="p.key!='author'">{{p.key}} {{p.value}}</div></div>
       </div>
     </div>
 
