@@ -1,8 +1,6 @@
 const exp= require('express');
 const userController = require("./../Controllers/userController.js")
-// const { handleLogin } = require('../Controllers/usersController');
-// const { handleSignup } = require('../Controllers/usersController');
-// const { protect } = require('../Controllers/userController');
+
 
 const router= exp.Router();
 

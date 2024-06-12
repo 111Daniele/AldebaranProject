@@ -61,8 +61,7 @@ export class AuthService {
     //   }
     this.user.next(modelUser)
     let dateus: Date= new Date(modelUser.expiresDate)
-    // console.log("DATA", dateus, "-", new Date(dateus))
-    // console.log("SCAD MAX: ", dateus.getTime() - new Date().getTime())
+   
 
     if (dateus < new Date()){
       console.log("scaduto2 perchè ", dateus, "è minore di " , new Date());
