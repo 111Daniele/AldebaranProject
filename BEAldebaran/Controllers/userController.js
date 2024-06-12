@@ -144,7 +144,6 @@ exports.approveUser= asyncErrorHandler( async (req, res, next)=>{
     let id= req.body.id
     let user= await User.findOne({name: id})
     user.role= "approved"
-    
     await user.save()
 })
 
